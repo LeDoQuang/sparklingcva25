@@ -124,6 +124,12 @@ section {
   contain-intrinsic-size: 1px 600px;
 }
 
+/* On Safari, avoid experimental content-visibility which can be unstable */
+.safari-soft section {
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
+}
+
 /* === About prose enhancements === */
 #about { position: relative; }
 

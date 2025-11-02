@@ -1,3 +1,11 @@
+// Basic Safari detection used across script
+const IS_SAFARI = (() => {
+  try {
+    const ua = navigator.userAgent;
+    return /Safari\//.test(ua) && !/Chrome\//.test(ua) && !/Chromium\//.test(ua);
+  } catch { return false; }
+})();
+
 // === Tạo background với bg1 loop ===
 (function() {
   // Prefer WebP background if supported; fallback to PNG
@@ -24,13 +32,7 @@
 
 // === Safari softening: detect Safari and add a class to reduce heavy effects ===
 (function() {
-  try {
-    const ua = navigator.userAgent;
-    const isSafari = /Safari\//.test(ua) && !/Chrome\//.test(ua) && !/Chromium\//.test(ua);
-    if (isSafari) {
-      document.documentElement.classList.add('safari-soft');
-    }
-  } catch {}
+  try { if (IS_SAFARI) document.documentElement.classList.add('safari-soft'); } catch {}
 })();
 
 // === IntersectionObserver cho hiệu ứng reveal ===
@@ -599,7 +601,7 @@ if (housesSection) {
       if (window.innerWidth >= 1024) {
         radius = Math.max(80, Math.floor(radius * 0.82));
       }
-      const nodes = [];
+  const nodes = [];
       for (let i = 0; i < N; i++) {
         const h = ringHouses[i];
         const deg = (i / N) * 360;
@@ -678,22 +680,33 @@ if (housesSection) {
         orbitRing.appendChild(btn);
         nodes.push({ el: btn, base: baseRad });
       }
-      // Animate items around circle without rotating the images
-      let start = null;
+      // Positioning function (used for both static Safari and animated non-Safari)
       const omega = (2 * Math.PI) / 50; // one revolution per 50s
-      function frame(ts) {
-        if (!start) start = ts;
-        const t = (ts - start) / 1000;
+      function applyPositions(tSeconds = 0) {
         const contW = (orbitRing.clientWidth || container?.clientWidth || 720);
         let r = Math.max(100, Math.floor(contW / 2 - (itemRadius + edgePadding)));
         if (window.innerWidth >= 1024) r = Math.max(80, Math.floor(r * 0.82));
         const cos = Math.cos, sin = Math.sin;
         for (const n of nodes) {
-          const ang = n.base + omega * t;
+          const ang = n.base + omega * tSeconds;
           const x = r * cos(ang);
           const y = r * sin(ang);
           n.el.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
         }
+      }
+
+      if (IS_SAFARI) {
+        // On Safari/iOS, keep orbit static to avoid potential crashes
+        applyPositions(0);
+        return;
+      }
+
+      // Animate items around circle without rotating the images (non-Safari)
+      let start = null;
+      function frame(ts) {
+        if (!start) start = ts;
+        const t = (ts - start) / 1000;
+        applyPositions(t);
         requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
