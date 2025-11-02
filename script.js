@@ -17,7 +17,8 @@
     document.body.style.backgroundPosition = 'top center';
     document.body.style.backgroundSize = '100% auto';
   } catch {
-    document.body.style.backgroundImage = 'url("photo/bg1.png")';
+    // Fallback to the same WebP (png not provided in repo)
+    document.body.style.backgroundImage = 'url("photo/bg1.webp")';
   }
 })();
 
