@@ -1,16 +1,35 @@
 // === Tạo background với bg1 loop ===
 (function() {
-  const img = new Image();
-  
-  img.onload = function() {
-    // Apply bg1 to body - loop bình thường
-    document.body.style.backgroundImage = `url(${img.src})`;
+  // Prefer WebP background if supported; fallback to PNG
+  try {
+    const isWebpSupported = (function() {
+      try {
+        const c = document.createElement('canvas');
+        if (!c.getContext) return false;
+        return c.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+      } catch { return false; }
+    })();
+    const bg = isWebpSupported
+      ? 'image-set(url("photo/bg1.webp") type("image/webp"), url("photo/bg1.webp") type("image/webp"))'
+      : 'url("photo/bg1.webp")';
+    document.body.style.backgroundImage = bg;
     document.body.style.backgroundRepeat = 'repeat';
     document.body.style.backgroundPosition = 'top center';
     document.body.style.backgroundSize = '100% auto';
-  };
+  } catch {
+    document.body.style.backgroundImage = 'url("photo/bg1.png")';
+  }
+})();
 
-  img.src = 'photo/bg1.png';
+// === Safari softening: detect Safari and add a class to reduce heavy effects ===
+(function() {
+  try {
+    const ua = navigator.userAgent;
+    const isSafari = /Safari\//.test(ua) && !/Chrome\//.test(ua) && !/Chromium\//.test(ua);
+    if (isSafari) {
+      document.documentElement.classList.add('safari-soft');
+    }
+  } catch {}
 })();
 
 // === IntersectionObserver cho hiệu ứng reveal ===
@@ -165,6 +184,19 @@ if (housesSection) {
   const infoRank = document.getElementById('house-info-rank');
   const infoText = document.getElementById('house-info-text');
   const centerPointsEl = document.getElementById('house-center-points');
+  // Helper: set image to WebP if available, else fallback to original
+  function setImageWithWebp(imgEl, originalPath) {
+    if (!imgEl || !originalPath) return;
+    const dot = originalPath.lastIndexOf('.');
+    let webp = originalPath;
+    if (dot > -1) webp = originalPath.slice(0, dot) + '.webp';
+    // Try webp first
+    imgEl.onerror = function onErr() {
+      imgEl.onerror = null;
+      imgEl.src = originalPath;
+    };
+    imgEl.src = webp;
+  }
 
   if (!orbitRing) return;
   // Helper to sample average color from an image element (small 8x8)
@@ -187,14 +219,14 @@ if (housesSection) {
   }
 
   const fallback = [
-    { code:'a', name:'Nhà A', points: 450, rank: 1, info: 'Nhà A mạnh về học thuật và sáng tạo.', image:'photo/a.png' },
-    { code:'p', name:'Nhà P', points: 420, rank: 2, info: 'Tinh thần đồng đội và tiên phong.', image:'photo/p.png' },
-    { code:'e', name:'Nhà E', points: 395, rank: 3, info: 'Năng lượng và nhiệt huyết.', image:'photo/e.png' },
-    { code:'i', name:'Nhà I', points: 380, rank: 4, info: 'Bản lĩnh và kiên định.', image:'photo/i.png' },
-    { code:'s', name:'Nhà S', points: 365, rank: 5, info: 'Sáng suốt và sẻ chia.', image:'photo/s.png' },
-    { code:'m', name:'Nhà M', points: 340, rank: 6, info: 'Mạnh mẽ và trách nhiệm.', image:'photo/m.png' },
-    { code:'v', name:'Nhà V', points: 315, rank: 7, info: 'Vượt trội theo cách riêng.', image:'photo/v.png' },
-    { code:'d', name:'Nhà D', points: 290, rank: 8, info: 'Đoàn kết là sức mạnh.', image:'photo/d.png' },
+    { code:'a', name:'Nhà A', points: 450, rank: 1, info: 'Nhà A mạnh về học thuật và sáng tạo.', image:'photo/a.webp' },
+    { code:'p', name:'Nhà P', points: 420, rank: 2, info: 'Tinh thần đồng đội và tiên phong.', image:'photo/p.webp' },
+    { code:'e', name:'Nhà E', points: 395, rank: 3, info: 'Năng lượng và nhiệt huyết.', image:'photo/e.webp' },
+    { code:'i', name:'Nhà I', points: 380, rank: 4, info: 'Bản lĩnh và kiên định.', image:'photo/i.webp' },
+    { code:'s', name:'Nhà S', points: 365, rank: 5, info: 'Sáng suốt và sẻ chia.', image:'photo/s.webp' },
+    { code:'m', name:'Nhà M', points: 340, rank: 6, info: 'Mạnh mẽ và trách nhiệm.', image:'photo/m.webp' },
+    { code:'v', name:'Nhà V', points: 315, rank: 7, info: 'Vượt trội theo cách riêng.', image:'photo/v.webp' },
+    { code:'d', name:'Nhà D', points: 290, rank: 8, info: 'Đoàn kết là sức mạnh.', image:'photo/d.webp' },
   ];
 
   function safeJSON(text) {
@@ -316,7 +348,7 @@ if (housesSection) {
                 name: `Nhà ${code.toUpperCase()}`,
                 displayName: `Nhà ${code.toUpperCase()}`,
                 points: byCode[code],
-                image: `photo/${code}.png`,
+                image: `photo/${code}.webp`,
                 info: '',
               });
             }
@@ -332,7 +364,7 @@ if (housesSection) {
 
   function showInfo(h) {
     if (!h) return;
-    infoImg.src = h.image;
+  setImageWithWebp(infoImg, h.image);
     infoImg.alt = h.name;
     const displayName = h.displayName || h.name;
     infoName.textContent = displayName;
@@ -405,44 +437,148 @@ if (housesSection) {
   infoClose?.addEventListener('click', () => { infoPanel.hidden = true; });
 
   function render(data) {
-  // Compute rank fresh every time based on points (ignore any pre-existing rank)
-  const sorted = [...data].sort((a,b) => (b.points||0) - (a.points||0));
-  sorted.forEach((h, i) => { h.rank = i + 1; });
-    const top = sorted[0];
-    let ringHouses = sorted.slice(1); // 7 houses exactly
+    // Compute rank with ties: houses with equal points share the same rank
+    const sorted = [...data].sort((a, b) => (b.points || 0) - (a.points || 0));
+    let currentRank = 0;
+    let lastPoints = null;
+    for (let i = 0; i < sorted.length; i++) {
+      const pts = sorted[i].points || 0;
+      if (i === 0) {
+        currentRank = 1;
+      } else if (pts !== lastPoints) {
+        // competition ranking: 1,1,3 when top tie of 2
+        currentRank = i + 1;
+      }
+      sorted[i].rank = currentRank;
+      lastPoints = pts;
+    }
 
-    // Ensure exactly 7 items on ring (in case data length differs)
+    // Group top houses (may be >1 if tie for first)
+    const topPoints = sorted.length ? (sorted[0].points || 0) : 0;
+    const topGroup = sorted.filter(h => (h.points || 0) === topPoints);
+    let ringHouses = sorted.filter(h => (h.points || 0) !== topPoints);
+
+    // Ensure max 7 on ring (layout assumption); extra get truncated
     ringHouses = ringHouses.slice(0, 7);
 
-    // center
-  centerImg.src = top.image; centerImg.alt = top.displayName || top.name;
-  centerImg.title = (top.displayName || top.name) + (top.instrument ? ` • ${top.instrument}` : '');
-  centerName.textContent = top.displayName || top.name;
-    centerPoints.textContent = `${top.points} điểm • #${top.rank}`;
-  centerImg.style.cursor = 'pointer';
-  centerImg.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showInfo(top); });
-    // Apply accent color to center points badge based on center image
-    centerImg.addEventListener('load', () => {
-      const rgb = sampleAvgColor(centerImg);
-      if (rgb && centerPointsEl) {
-        const {r,g,b} = rgb;
-        const accent = `rgb(${r}, ${g}, ${b})`;
-        // Match ring label style: colored text + border, dark translucent background
-        centerPointsEl.style.borderColor = accent;
-        centerPointsEl.style.color = accent;
-        centerPointsEl.style.background = 'rgba(0,0,0,0.35)';
-        // Also tint the center frame to match ring item backgrounds
-        if (centerFrame) {
-          centerFrame.style.borderColor = `rgba(${r}, ${g}, ${b}, 0.35)`;
-          centerFrame.style.background = `rgba(${r}, ${g}, ${b}, 0.08)`;
-        }
+    // Render center area
+    const housesCenter = document.querySelector('.houses-center');
+    const labelWrap = document.querySelector('.house-center-label');
+    // Reset center area to default single layout first
+    if (topGroup.length === 1) {
+      const top = topGroup[0];
+      // Restore single center DOM if needed
+      if (housesCenter && !housesCenter.querySelector('#house-center-img')) {
+        housesCenter.innerHTML = `
+          <div class="center-glow"></div>
+          <div class="center-frame">
+            <img id="house-center-img" src="" alt="House Center" />
+          </div>
+          <div class="house-center-label">
+            <div id="house-center-name" class="house-center-name"></div>
+            <div id="house-center-points" class="house-center-points"></div>
+          </div>`;
       }
-    });
+      const centerImgNow = document.getElementById('house-center-img');
+      const centerNameNow = document.getElementById('house-center-name');
+      const centerPointsNow = document.getElementById('house-center-points');
+      const centerFrameNow = document.querySelector('.center-frame');
+      if (centerImgNow) {
+        setImageWithWebp(centerImgNow, top.image);
+        centerImgNow.alt = top.displayName || top.name;
+        centerImgNow.title = (top.displayName || top.name) + (top.instrument ? ` • ${top.instrument}` : '');
+        centerImgNow.style.cursor = 'pointer';
+        centerImgNow.onclick = (e) => { e.preventDefault(); e.stopPropagation(); showInfo(top); };
+        centerImgNow.addEventListener('load', () => {
+          const rgb = sampleAvgColor(centerImgNow);
+          if (rgb && centerPointsNow) {
+            const { r, g, b } = rgb;
+            const accent = `rgb(${r}, ${g}, ${b})`;
+            centerPointsNow.style.borderColor = accent;
+            centerPointsNow.style.color = accent;
+            centerPointsNow.style.background = 'rgba(0,0,0,0.35)';
+            if (centerFrameNow) {
+              centerFrameNow.style.borderColor = `rgba(${r}, ${g}, ${b}, 0.35)`;
+              centerFrameNow.style.background = `rgba(${r}, ${g}, ${b}, 0.08)`;
+            }
+          }
+        }, { once: true });
+      }
+      if (centerNameNow) centerNameNow.textContent = top.displayName || top.name;
+      if (centerPointsNow) centerPointsNow.textContent = `${top.points} điểm • #${top.rank}`;
+    } else {
+      // Multi-center: display all top houses in a small cluster at center
+      if (housesCenter) {
+        housesCenter.innerHTML = `<div class="center-glow"></div><div class="center-cluster"></div>`;
+  const cluster = housesCenter.querySelector('.center-cluster');
+  const count = topGroup.length;
+  // On desktop, make 2-3 center avatars large; shrink only from 5+
+  const shrink = count >= 5;
+  const isMobile = window.innerWidth <= 768;
+  // Base size corresponds to CSS: desktop large=112, mobile=64
+  const baseSize = isMobile ? (shrink ? 64 : 64) : (shrink ? 64 : 112);
+  // Compute dynamic radius so items have at least ~14px spacing on arc
+  const spacing = isMobile ? 8 : 18;
+  let radius = Math.ceil(((baseSize + spacing) * count) / (2 * Math.PI));
+  // Clamp radius to fit within the center container
+  const centerW = housesCenter.clientWidth || 192;
+  const centerR = centerW / 2;
+  const halfItem = baseSize / 2;
+  const edgeMargin = 6;
+  const maxR = Math.max(0, Math.floor(centerR - halfItem - edgeMargin));
+  // also keep a sensible minimum for layout: at least half item to avoid overlap for 2 items
+  // Push ties slightly farther apart on desktop
+  const minR = isMobile ? Math.max(halfItem, 32) : Math.max(halfItem + 8, 64);
+  // Special case for 2 ties: ensure center-to-center distance > diameter
+  if (count === 2) {
+    const clearance = isMobile ? 4 : 12; // extra gap beyond exact diameter
+    const desired = Math.ceil((baseSize + clearance) / 2);
+    radius = Math.min(maxR, Math.max(desired, minR));
+  } else {
+    radius = Math.max(minR, Math.min(radius, maxR));
+  }
+        topGroup.forEach((h, idx) => {
+          const angle = (idx / count) * 2 * Math.PI;
+          const dx = Math.cos(angle) * radius;
+          const dy = Math.sin(angle) * radius;
+          const btn = document.createElement('button');
+          // On desktop when not shrink, use default .mini-center (112px); otherwise .small
+          btn.className = shrink ? 'mini-center small' : 'mini-center';
+          btn.type = 'button';
+          btn.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px)`;
+          const img = document.createElement('img');
+          setImageWithWebp(img, h.image); img.alt = h.displayName || h.name;
+          img.decoding = 'async'; img.loading = 'eager';
+          btn.appendChild(img);
+          // Small label with points and rank
+          const label = document.createElement('span');
+          label.className = 'mini-label';
+          label.textContent = `${h.points} • #${h.rank}`;
+          btn.appendChild(label);
+          // Tint borders/labels based on avatar colors
+          const applyTint = () => {
+            const rgb = sampleAvgColor(img);
+            if (!rgb) return;
+            const { r, g, b } = rgb;
+            const accent = `rgb(${r}, ${g}, ${b})`;
+            btn.style.borderColor = accent;
+            label.style.borderColor = accent;
+            label.style.color = accent;
+          };
+          if (img.complete) { requestAnimationFrame(applyTint); }
+          else { img.addEventListener('load', applyTint, { once: true }); }
+
+          btn.title = `${h.name} — ${h.points} điểm (#${h.rank})`;
+          btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); showInfo(h); });
+          cluster.appendChild(btn);
+        });
+      }
+    }
 
     // ring placement function (responsive)
     function placeRingItems() {
       orbitRing.innerHTML = '';
-      const N = ringHouses.length; // expect 7
+      const N = ringHouses.length; // typically 7; fewer if multi-center
       // container width fallback
       const container = document.querySelector('.houses-orbit');
       const containerW = (orbitRing.clientWidth || container?.clientWidth || 720);
@@ -469,7 +605,7 @@ if (housesSection) {
         const figure = document.createElement('span');
         figure.className = 'orbit-figure';
         const img = document.createElement('img');
-        img.src = h.image; img.alt = h.name;
+  setImageWithWebp(img, h.image); img.alt = h.name;
         // Performance-friendly image hints
         img.loading = 'lazy';
         img.decoding = 'async';

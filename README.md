@@ -1,5 +1,7 @@
 🧠 Hướng dẫn cho AI – Dự án “Sparkling Chu Văn An Landing Page”
 
+Repo GitHub: https://github.com/LeDoQuang/sparklingcva25
+
 📘 Mục đích: Giúp các công cụ AI trong VS Code (GitHub Copilot, ChatGPT, Codeium, v.v.) hiểu cấu trúc, phong cách code, và định hướng phát triển của website này.
 
 🎯 Mục tiêu dự án

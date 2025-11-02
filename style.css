@@ -35,7 +35,7 @@
 
 body {
   font-family: "Times New Roman", Times, serif;
-  background: var(--bg) url('photo/bg1.png') repeat-y top center;
+  background: var(--bg) url('photo/bg1.webp') repeat-y top center;
   background-size: 100% auto;
   color: var(--ink);
   line-height: 1.6;
@@ -119,6 +119,9 @@ section {
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  /* Help Safari skip offscreen work */
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 600px;
 }
 
 /* === About prose enhancements === */
@@ -165,6 +168,9 @@ section {
   opacity: 0.5;
   z-index: 1;
   filter: drop-shadow(0 6px 16px rgba(106, 227, 255, 0.3));
+  /* Perf: hint compositor for smoother animations */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Hero section decorations */
@@ -230,18 +236,21 @@ section {
 /* Hide decorations on mobile to reduce clutter */
 @media (max-width: 768px) {
   .float-decoration {
-    opacity: 0.25;
+    opacity: 0.2;
     max-width: 60px;
+    /* Reduce motion on small screens to avoid jank */
+    animation: none !important;
+    filter: drop-shadow(0 2px 6px rgba(106, 227, 255, 0.15));
   }
   
   .float-dec-1 {
-    top: 15%;
+    top: 12%;
     left: 2%;
     width: 50px;
   }
   
   .float-dec-2 {
-    top: 5%;
+    top: 3%;
     right: 2%;
     width: 55px;
   }
@@ -251,23 +260,91 @@ section {
   }
   
   .float-dec-4 {
-    bottom: 5%;
+    bottom: 6%;
     left: 2%;
     width: 50px;
   }
   
   .float-dec-5 {
-    top: 8%;
+    top: 6%;
     left: 3%;
     width: 45px;
   }
   
   .float-dec-6 {
-    bottom: 10%;
+    bottom: 8%;
     right: 2%;
     width: 50px;
   }
 }
+
+/* Safari/iOS specific softening to prevent heavy repaint cost */
+@supports (-webkit-touch-callout: none) {
+  .about-container {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .float-decoration {
+    /* Safari struggles with heavy filter shadows while animating */
+    filter: drop-shadow(0 3px 8px rgba(106, 227, 255, 0.18));
+  }
+}
+
+/* Safari softening via class toggled by JS */
+.safari-soft .about-container {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.safari-soft .float-decoration {
+  animation: none !important;
+  filter: drop-shadow(0 2px 6px rgba(106, 227, 255, 0.15));
+}
+.safari-soft .houses-center img {
+  /* Remove centerPulse to reduce composite cost */
+  animation: centerBob 4.6s ease-in-out infinite !important;
+}
+.safari-soft .orbit-sprite img {
+  /* Keep only bobbing; drop glow filter animation */
+  animation: bob 4.5s ease-in-out infinite !important;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.28)) !important;
+}
+.safari-soft .orbit-item,
+.safari-soft .mini-center {
+  /* Lighten shadows to avoid repaint spikes */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28) !important;
+}
+.safari-soft .center-frame {
+  box-shadow: 0 6px 22px rgba(0,0,0,0.3) !important;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Footer */
+.site-footer {
+  padding: 1.25rem 5%;
+  color: rgba(230, 240, 255, 0.7);
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(122, 142, 180, 0.15);
+  background: linear-gradient(180deg, rgba(11,18,32,0) 0%, rgba(11,18,32,0.6) 100%);
+}
+.site-footer a {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(90deg, var(--brand), var(--brand2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.site-footer a:hover { opacity: 0.85; }
 
 .about-container::before {
   content: '';
@@ -773,19 +850,72 @@ footer p {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 160px; /* 80% of 200 */
-  height: 160px; /* 80% of 200 */
+  width: 256px; /* larger center to avoid overlap for 2-3 ties on desktop */
+  height: 256px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   z-index: 3; /* above orbit items */
 }
 
+/* Cluster container for multi top houses */
+.center-cluster {
+  position: absolute;
+  inset: 0;
+  z-index: 4; /* above orbit items for clarity */
+}
+
+.mini-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 112px; /* larger on desktop to match orbit item size */
+  height: 112px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.85), 0 10px 30px rgba(0,0,0,0.35);
+  cursor: pointer;
+  will-change: transform;
+  z-index: 4;
+}
+
+.mini-center img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(106, 227, 255, 0.07);
+  border: 2px solid rgba(106, 227, 255, 0.25);
+}
+
+/* Smaller variant when many houses tie for first */
+.mini-center.small { width: 64px; height: 64px; }
+.mini-center.small img { width: 52px; height: 52px; }
+
+.mini-label {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #e6f0ff;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
 /* Center frame acts like orbit-item for consistency */
 .center-frame {
   position: relative;
-  width: 136px; /* 80% of 170 */
-  height: 136px; /* 80% of 170 */
+  width: 208px; /* scale ring to match larger center */
+  height: 208px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -795,8 +925,8 @@ footer p {
 }
 
 .houses-center img {
-  width: 112px; /* 80% of 140 */
-  height: 112px; /* 80% of 140 */
+  width: 96px; /* reduced so it fits comfortably inside ring */
+  height: 96px;
   object-fit: contain;
   border-radius: 50%;
   background: rgba(106, 227, 255, 0.07);
@@ -842,10 +972,10 @@ footer p {
 .house-center-points {
   font-size: 12px;
   line-height: 1;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border-radius: 999px;
-  background: rgba(0,0,0,0.35); /* JS tints via sampled color */
-  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(0,0,0,0.55); /* JS tints via sampled color */
+  border: 1px solid rgba(255,255,255,0.35);
   color: #e6f0ff;
   white-space: nowrap;
   backdrop-filter: blur(2px);
@@ -1042,10 +1172,12 @@ footer p {
 }
 
 @media (max-width: 768px) {
-  .houses-center { width: 144px; height: 144px; } /* 80% of 180 */
-  .center-frame { width: 120px; height: 120px; } /* 80% of 150 */
-  .houses-center img { width: 96px; height: 96px; } /* 80% of 120 */
+  .houses-center { width: 168px; height: 168px; }
+  .center-frame { width: 144px; height: 144px; }
+  .houses-center img { width: 84px; height: 84px; }
   .house-center-label { bottom: 6px; }
+  .mini-center { width: 64px; height: 64px; }
+  .mini-center img { width: 52px; height: 52px; }
   .orbit-item { width: 72px; height: 72px; }
   .orbit-item img { width: 60px; height: 60px; }
   /* Improve orbit ring centering on mobile */
