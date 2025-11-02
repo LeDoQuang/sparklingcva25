@@ -9,7 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* Use the same font as the main site */
+    /* Decorative title font from root /fonts */
+    @font-face {
+      font-family: 'BlazeGlory';
+      src: url('../fonts/MTD-Blaze-Glory.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
 
     * {
       margin: 0;
@@ -63,7 +70,7 @@
     }
 
     h1 {
-      font-family: 'Be Vietnam Pro', sans-serif;
+      font-family: 'BlazeGlory', 'Be Vietnam Pro', sans-serif;
       font-size: clamp(15rem, 35vw, 30rem);
       font-weight: 400;
       background: var(--gradient);
