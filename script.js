@@ -103,26 +103,34 @@ window.addEventListener('scroll', () => {
   });
 });
 
-// === Countdown đến 19/11/2025 ===
-const targetDate = new Date('2025-11-19T00:00:00').getTime();
-const countdownElement = document.getElementById('mainCountdown');
+// === Countdown đến 19/11/2025 (tính theo ngày lịch, bỏ qua giờ phút) ===
+(function setupCountdown() {
+  const countdownElement = document.getElementById('mainCountdown');
+  if (!countdownElement) return;
 
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = targetDate - now;
-  
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  
-  if (days >= 0) {
-    countdownElement.textContent = `D - ${days.toString().padStart(2, '0')}`;
-  } else {
-    countdownElement.textContent = 'D - DAY!';
+  // Dùng ngày theo lịch địa phương để tránh lệch D- do giờ phút trong ngày
+  const targetMidnight = new Date(2025, 10, 19); // 10 = Tháng 11 (0-based)
+  targetMidnight.setHours(0, 0, 0, 0);
+
+  function updateCountdown() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    // Dùng round để an toàn qua DST (23h/25h); chênh lệch vẫn tính theo số ngày lịch
+    const diffDays = Math.round((targetMidnight.getTime() - today.getTime()) / 86400000);
+
+    if (diffDays > 0) {
+      countdownElement.textContent = `D - ${String(diffDays).padStart(2, '0')}`;
+    } else if (diffDays === 0) {
+      countdownElement.textContent = 'D - DAY!';
+    } else {
+      countdownElement.textContent = 'D - DAY!';
+    }
   }
-}
 
-// Cập nhật ngay và mỗi giờ
-updateCountdown();
-setInterval(updateCountdown, 3600000); // Mỗi giờ
+  // Cập nhật ngay và mỗi giờ
+  updateCountdown();
+  setInterval(updateCountdown, 3600000); // Mỗi giờ
+})();
 
 // === House Points Counter Animation ===
 function animateCounter(element, target, duration = 2000) {
