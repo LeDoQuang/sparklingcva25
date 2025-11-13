@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Giải Nhảy Cổ Vũ & Liên Hoan Nhạc Cụ</title>
+	<link rel="stylesheet" href="../style.css">
+	<style>
+		/* Page-scoped styles for the gallery layout */
+		body { 
+			max-width: none; 
+			/* Add dark patterned background so light text is visible */
+			background-image: url('../photo/bg1.webp');
+			background-repeat: repeat;
+			background-position: top center;
+			background-size: 100% auto;
+		}
+		.pd-wrapper {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 3rem 5%;
+		}
+		.pd-title { text-align: center; margin-bottom: 2rem; }
+		.pd-split {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 2.5rem;
+			align-items: start;
+		}
+		.pd-frame {
+			position: relative;
+			border-radius: 16px;
+			overflow: visible;
+			background: rgba(255,255,255,0.04);
+			border: 1px solid rgba(255,255,255,0.15);
+			box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+		}
+		.house-final-card:hover {
+			transform: translateY(-10px);
+			border-color: var(--brand);
+			box-shadow: 0 20px 60px rgba(106, 227, 255, 0.5);
+		}
+		.house-header-final {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 2;
+			width: 120px;
+			height: 180px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			pointer-events: none;
+		}
+
+		.house-logo-frame-final {
+			position: absolute;
+			top: 10px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 110px;
+			height: 110px;
+			border-radius: 50%;
+			border: 4px solid var(--brand);
+			background: none;
+			z-index: 1;
+			pointer-events: none;
+		}
+		.house-icon-final {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			overflow: hidden;
+			border: 3px solid var(--brand);
+			box-shadow: 0 0 25px rgba(106, 227, 255, 0.5);
+			flex-shrink: 0;
+			transition: all 0.5s;
+			position: relative;
+			z-index: 2;
+			margin-top: 15px;
+		}
+		.house-final-card:hover .house-icon-final {
+			transform: rotate(360deg) scale(1.1);
+		}
+		.house-icon-final img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
+		.house-name-final {
+			font-size: 3.5rem;
+			font-weight: 800;
+			text-align: center;
+			color: var(--brand);
+			font-family: 'BlazeGlory', 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+			text-shadow: 0 0 20px rgba(106, 227, 255, 0.6);
+			position: relative;
+			z-index: 2; /* ensure above lines */
+			margin-bottom: 2rem;
+		}
+		.house-classes-final {
+			position: relative;
+			z-index: 1;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 0.6rem;
+      margin-top: 2rem;
+		}
+		.house-classes-final li {
+			background: rgba(106, 227, 255, 0.12);
+			padding: 0.6rem 0.8rem;
+			/* Diamond shape for class frames */
+			clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%);
+			border: 1px solid rgba(106, 227, 255, 0.3);
+			font-size: 0.9rem;
+			font-weight: 500;
+			text-align: center;
+			color: var(--brand);
+			opacity: 0;
+			transform: translateY(-80px) rotateX(90deg) scale(0.5);
+			animation: flipIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+			transition: all 0.3s ease;
+			transform-style: preserve-3d;
+			perspective: 1000px;
+		}
+		/* Thin vertical stripe (khung dọc) - under content */
+		.house-final-card::before {
+			content: '';
+			position: absolute;
+			left: 10px;
+			top: 12px;
+			bottom: 12px;
+			width: 4px;
+			border-radius: 2px;
+			background: linear-gradient(180deg, color-mix(in srgb, var(--house-color, var(--brand)) 80%, transparent), transparent);
+			pointer-events: none;
+			z-index: 0;
+		}
+		.house-classes-final li:hover {
+			transform: translateY(-5px) scale(1.05) rotateZ(2deg);
+			box-shadow: 0 8px 20px rgba(106, 227, 255, 0.4);
+			background: rgba(106, 227, 255, 0.2);
+			border-color: var(--brand);
+		}
+		.house-classes-final li:nth-child(1) { animation-delay: 0.15s; }
+		.house-classes-final li:nth-child(2) { animation-delay: 0.25s; }
+		.house-classes-final li:nth-child(3) { animation-delay: 0.35s; }
+		.house-classes-final li:nth-child(4) { animation-delay: 0.45s; }
+		.house-classes-final li:nth-child(5) { animation-delay: 0.55s; }
+		.house-classes-final li:nth-child(6) { animation-delay: 0.65s; }
+		.house-classes-final li:nth-child(7) { animation-delay: 0.75s; }
+		.house-classes-final li:nth-child(8) { animation-delay: 0.85s; }
+		/* Center last item when there are 7 classes (for houses S and P) */
+		.house-classes-final li:nth-child(7):last-child {
+			grid-column: 2 / 3;
+		}
+		@keyframes flipIn {
+			0% {
+				opacity: 0;
+				transform: translateY(-80px) rotateX(90deg) scale(0.5);
+			}
+			60% {
+				transform: translateY(10px) rotateX(-10deg) scale(1.05);
+			}
+			100% {
+				opacity: 1;
+				transform: translateY(0) rotateX(0deg) scale(1);
+			}
+		}
+		.house-card {
+			position: relative;
+			background: radial-gradient(circle at center, rgba(106, 227, 255, 0.15), rgba(124, 255, 178, 0.05));
+			border: 2px solid rgba(106, 227, 255, 0.4);
+			border-radius: 20px;
+			padding: 2rem;
+			backdrop-filter: blur(15px);
+			cursor: pointer;
+			transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+			overflow: visible;
+			min-height: 350px;
+		}
+		.house-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 15px 40px rgba(106, 227, 255, 0.5);
+			border-color: var(--brand);
+		}
+		.house-header {
+			position: relative;
+			z-index: 10;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.8rem;
+			margin-bottom: 2rem;
+			text-align: center;
+		}
+		.house-icon {
+			width: 120px;
+			height: 120px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: radial-gradient(circle, rgba(106, 227, 255, 0.3), transparent);
+			border: 3px solid rgba(106, 227, 255, 0.6);
+			transition: all 0.5s;
+			overflow: hidden;
+			flex-shrink: 0;
+			padding: 0;
+			box-shadow: 0 0 20px rgba(106, 227, 255, 0.4),
+			            inset 0 0 20px rgba(106, 227, 255, 0.2);
+		}
+		.house-icon img {
+			width: 120%;
+			height: 120%;
+			object-fit: cover;
+			object-position: center;
+			filter: drop-shadow(0 4px 12px rgba(106, 227, 255, 0.6));
+		}
+		.house-name {
+			position: relative;
+			z-index: 1;
+			font-size: 1.4rem;
+			font-weight: 700;
+			background: var(--gradient);
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			text-shadow: 0 0 20px rgba(106, 227, 255, 0.3);
+		}
+		/* Class list */
+		.house-classes {
+			position: relative;
+			z-index: 1;
+			list-style: none;
+			padding: 0;
+			margin: 1.5rem 0 0 0;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 0.6rem;
+		}
+		.house-classes li {
+			background: rgba(106, 227, 255, 0.08);
+			padding: 0.6rem 1rem;
+			border-radius: 10px;
+			border: 1px solid rgba(106, 227, 255, 0.3);
+			font-size: 0.9rem;
+			font-weight: 500;
+			text-align: center;
+			color: var(--brand);
+			transition: all 0.3s ease;
+		}
+		.house-classes li:hover {
+			background: rgba(106, 227, 255, 0.15);
+			border-color: var(--brand);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(106, 227, 255, 0.3);
+		}
+		.house-classes li:last-child {
+			border-bottom: none;
+		}
+		@keyframes slideInClass {
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+		@keyframes sparkle {
+			0%, 100% { 
+				transform: translateX(0); 
+				text-shadow: none;
+			}
+			50% { 
+				transform: translateX(5px); 
+				text-shadow: 0 0 10px rgba(106, 227, 255, 0.8);
+			}
+		}
+		.house-classes li::before {
+			content: '✦';
+			margin-right: 0.5rem;
+			color: var(--brand);
+			opacity: 0.7;
+		}
+
+		/* Back button */
+		.back-button {
+			position: fixed;
+			top: 2rem;
+			left: 2rem;
+			z-index: 100;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.75rem 1.5rem;
+			background: rgba(17, 24, 43, 0.9);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(106, 227, 255, 0.3);
+			border-radius: 50px;
+			color: var(--ink);
+			text-decoration: none;
+			font-weight: 600;
+			transition: all 0.3s ease;
+		}
+		.back-button:hover {
+			background: rgba(106, 227, 255, 0.15);
+			transform: translateX(-5px);
+			box-shadow: 0 5px 20px rgba(106, 227, 255, 0.3);
+		}
+		.back-button::before {
+			content: '←';
+			font-size: 1.5rem;
+			line-height: 1;
+		}
+
+		@media (max-width: 900px) {
+			.houses-final-grid { grid-template-columns: 1fr; }
+			.house-header-final { flex-direction: column; text-align: center; }
+			.house-classes-final { grid-template-columns: repeat(3, 1fr); }
+			.back-button {
+				top: 1rem;
+				left: 1rem;
+				padding: 0.5rem 1rem;
+				font-size: 0.9rem;
+			}
+		}
+	.pd-dots {
+			display: flex; gap: .5rem; align-items: center; flex-wrap: wrap;
+		}
+		.pd-dot {
+			width: 28px; height: 28px; border-radius: 999px;
+			border: 1px solid rgba(255,255,255,0.25);
+			background: rgba(0,0,0,0.35);
+			color: #e6f0ff; font-size: 0.85rem; line-height: 28px; text-align: center;
+			cursor: pointer;
+		}
+		.pd-dot[aria-current="true"] { border-color: var(--brand); color: var(--brand); background: rgba(106,227,255,0.12); }
+		@media (max-width: 900px) {
+			.pd-split { grid-template-columns: 1fr; }
+			.pd-frame { min-height: 300px; }
+		}
+
+
+		/* Media article + galleries */
+		.media-article { margin: 1rem 0 3rem; }
+		.media-article .article-inner { max-width: 1100px; margin: 0 auto; }
+		.media-paragraph { color: #e6f0ff; font-size: 1.25rem; line-height: 1.9; text-align: justify; margin: 1.5rem 0; }
+
+		/* Modern highlight-style gallery */
+		.media-gallery {
+			position: relative;
+			margin: 2rem 0;
+			border-radius: 24px;
+			overflow: hidden;
+			background: linear-gradient(135deg, rgba(106, 227, 255, 0.08), rgba(124, 255, 178, 0.05));
+			border: 2px solid rgba(106, 227, 255, 0.3);
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(106, 227, 255, 0.15);
+			backdrop-filter: blur(20px);
+			animation: galleryAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+		@keyframes galleryAppear {
+			from { opacity: 0; transform: translateY(30px) scale(0.95); }
+			to { opacity: 1; transform: translateY(0) scale(1); }
+		}
+		.media-gallery .slides {
+			position: relative;
+			width: 100%;
+			min-height: 500px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: rgba(0, 0, 0, 0.2);
+		}
+		.media-gallery .slides img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			opacity: 0;
+			transform: scale(0.9);
+			transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+			pointer-events: none;
+		}
+		.media-gallery .slides img.active {
+			opacity: 1;
+			transform: scale(1);
+			pointer-events: auto;
+			animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+		@keyframes slideIn {
+			from { opacity: 0; transform: scale(0.92) translateX(30px); }
+			to { opacity: 1; transform: scale(1) translateX(0); }
+		}
+		/* Hide progress bars */
+		.media-gallery .progress-bars {
+			display: none;
+		}
+		/* Navigation buttons - modern glassmorphic */
+		.media-gallery .nav {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 48px;
+			height: 48px;
+			border-radius: 50%;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			background: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(10px);
+			color: #fff;
+			font-size: 24px;
+			cursor: pointer;
+			display: grid;
+			place-items: center;
+			z-index: 5;
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+		}
+		.media-gallery .nav:hover {
+			background: rgba(106, 227, 255, 0.25);
+			border-color: var(--brand);
+			transform: translateY(-50%) scale(1.1);
+			box-shadow: 0 6px 30px rgba(106, 227, 255, 0.4);
+		}
+		.media-gallery .nav:active { transform: translateY(-50%) scale(0.95); }
+		.media-gallery .prev { left: 16px; }
+		.media-gallery .next { right: 16px; }
+		/* Hide counter and play/pause controls */
+		.media-gallery .counter,
+		.media-gallery .play-pause {
+			display: none;
+		}
+		/* Responsive */
+		@media (max-width: 768px) {
+			.media-gallery .slides { min-height: 300px; }
+			.media-gallery .nav { width: 40px; height: 40px; font-size: 20px; }
+			.media-gallery .prev { left: 8px; }
+			.media-gallery .next { right: 8px; }
+			.media-gallery .progress-bars { padding: 8px 8px 0; gap: 2px; }
+			.media-gallery .counter { font-size: 12px; padding: 6px 16px; }
+		}
+	</style>
+	<script>
+		// Fallback WebP -> original extension if needed
+		function setImageWithWebp(img, original) {
+			if (!img || !original) return;
+			const dot = original.lastIndexOf('.');
+			const webp = dot > -1 ? original.slice(0, dot) + '.webp' : original + '.webp';
+			img.onerror = function() { img.onerror = null; img.src = original; };
+			img.src = webp;
+		}
+
+		// Modern highlight-style gallery initializer with progress bars
+		function initGalleries() {
+			const galleries = document.querySelectorAll('.media-gallery');
+			galleries.forEach((gal, galIdx) => {
+				const slides = Array.from(gal.querySelectorAll('.slides img'));
+				const prevBtn = gal.querySelector('.nav.prev');
+				const nextBtn = gal.querySelector('.nav.next');
+				
+				if (!slides.length) return;
+				
+				let i = 0, timer, isPlaying = true;
+				const duration = 7000; // 7s per slide
+				
+				// No progress bars needed anymore
+				
+				// No counter needed
+				
+				// No play/pause button needed
+				
+				function render() {
+					slides.forEach((img, idx) => img.classList.toggle('active', idx === i));
+				}
+				
+				function go(n) {
+					i = (n + slides.length) % slides.length;
+					render();
+					if (isPlaying) startTimer();
+				}
+				
+				function startTimer() {
+					clearTimeout(timer);
+					timer = setTimeout(() => {
+						if (isPlaying) go(i + 1);
+					}, duration);
+				}
+				
+				function play() {
+					if (!isPlaying) {
+						isPlaying = true;
+						startTimer();
+					}
+				}
+				
+				function pause() {
+					isPlaying = false;
+					clearTimeout(timer);
+				}
+				
+				prevBtn.addEventListener('click', () => {
+					pause();
+					go(i - 1);
+				});
+				
+				nextBtn.addEventListener('click', () => {
+					pause();
+					go(i + 1);
+				});
+				
+				// Pause on hover, resume on leave
+				gal.addEventListener('mouseenter', pause);
+				gal.addEventListener('mouseleave', play);
+				
+				// Keyboard navigation
+				if (galIdx === 0) {
+					document.addEventListener('keydown', (e) => {
+						if (e.key === 'ArrowLeft') {
+							pause();
+							go(i - 1);
+						} else if (e.key === 'ArrowRight') {
+							pause();
+							go(i + 1);
+						}
+					});
+				}
+				
+				// Start
+				render();
+				startTimer();
+			});
+		}
+	</script>
+	<link rel="icon" type="image/webp" href="../photo/dau.webp">
+</head>
+<body>
+	<a href="../" class="back-button" aria-label="Quay lại trang chủ">Quay lại</a>
+	<main class="pd-wrapper">
+		<section class="media-article reveal">
+			<div class="article-inner">
+				<h2 class="section-title" style="font-size: 3.5rem; text-align: center; margin-bottom: 2rem; background: var(--gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">CHEERDAY 2025: KHI SỨC TRẺ VÀ TINH THẦN VƯƠN LÊN CÙNG HOÀ NHỊP</h2>
+
+				<p class="media-paragraph">Ngày 09/11 vừa qua, Cuộc thi Nhảy cổ vũ và Liên hoan Tài năng Nhạc cụ học sinh thuộc khuôn khổ chuỗi hoạt động Sparkling Chu Văn An 2025 đã diễn ra trọn vẹn tại Trung tâm Văn hóa Thông tin và Thể thao Xuân Đỉnh. Với 8 tiết mục Cheerdance đẹp mắt được chuẩn bị công phu cùng 8 tiết mục trình diễn nhạc cụ nghệ thuật đến từ 8 nhóm nhà, Ngày hội Cheerday 2025 đã để lại những dư âm khó phai trên hành trình chinh phục ngôi vị cao nhất tại mùa Lấp Lánh thứ XIII.</p>
+
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/cheerday/1/PHA05094.webp" alt="8 nhóm nhà trước giờ ra mắt" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05102.webp" alt="BGK" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05158.webp" alt="Tuyên bố khai mạc 1" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05166.webp" alt="Tuyên bố khai mạc 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05178.webp" alt="Tuyên bố khai mạc 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05192.webp" alt="Khai mạc 4" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05195.webp" alt="Khai mạc 5" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05200.webp" alt="Khai mạc 6" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05207.webp" alt="Khai mạc 7" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05210.webp" alt="Khai mạc 8" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05211.webp" alt="Khai mạc 9" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05219.webp" alt="Khai mạc 10" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/1/PHA05223.webp" alt="Khai mạc 11" loading="lazy" decoding="async">
+					</div>
+					<button class="nav prev" aria-label="Ảnh trước">‹</button>
+					<button class="nav next" aria-label="Ảnh sau">›</button>
+					<div class="dots" aria-label="Chọn ảnh"></div>
+				</div>
+
+				<p class="media-paragraph">Trên nền nhạc sôi động, 8 nhóm nhà đã cùng nhau tranh tài tại Cuộc thi Nhảy cổ vũ với những phần thể hiện đặc sắc trong màu áo rực rỡ đặc trưng của từng nhóm nhà. Những chiếc pompom lấp lánh rộn ràng theo từng bước nhảy không ngừng khuấy động bầu không khí vốn đã rực lửa lại càng thêm bùng nổ hơn bao giờ hết.</p>
+
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/cheerday/2/IMG_4867.webp" alt="8 nhà trước giờ biểu diễn" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/a.webp" alt="Nhóm nhà Adetis" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0588.webp" alt="Nhóm nhà Adetis 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/ẢNH 1.webp" alt="Nhóm nhà Adetis 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/ảnh 1d.webp" alt="Nhóm nhà Dalmerin" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/DSC02026.webp" alt="Nhóm nhà Dalmerin 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_1351.webp" alt="Nhóm nhà Dalmerin 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/ảnh 1d.webp" alt="Nhóm nhà Dalmerin 4" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/a.webp" alt="Nhóm nhà Ephonica" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_1663.webp" alt="Nhóm nhà Ephonica 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_8631.webp" alt="Nhóm nhà Ephonica 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/i.webp" alt="Nhóm nhà Imersica" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0740.webp" alt="Nhóm nhà Imersica 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0748.webp" alt="Nhóm nhà Imersica 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/m.webp" alt="Nhóm nhà Moneris" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_0379.webp" alt="Nhóm nhà Moneris 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_0629.webp" alt="Nhóm nhà Moneris 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/p.webp" alt="Nhóm nhà Perlindor" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_8884.webp" alt="Nhóm nhà Perlindor 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_8909.webp" alt="Nhóm nhà Perlindor 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/s.webp" alt="Nhóm nhà Seraphyn" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_1006.webp" alt="Nhóm nhà Seraphyn 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_8442.webp" alt="Nhóm nhà Seraphyn 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/v.webp" alt="Nhóm nhà Versaline" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/DSC02177.webp" alt="Nhóm nhà Versaline 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/DSC02197.webp" alt="Nhóm nhà Versaline 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/IMG_9090.webp" alt="Dance Challenge" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/PHA05752.webp" alt="Dance Challenge 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/PHA05785.webp" alt="Dance Challenge 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/PHA05804.webp" alt="Dance Challenge 4" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/PHA05831.webp" alt="Dance Challenge 5" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/PHA05832.webp" alt="Dance Challenge 6" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0825.webp" alt="Khoảnh khắc Cheerday" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0827.webp" alt="Khoảnh khắc Cheerday 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0829.webp" alt="Khoảnh khắc Cheerday 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0845.webp" alt="Khoảnh khắc Cheerday 4" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/2/_MG_0854.webp" alt="Khoảnh khắc Cheerday 5" loading="lazy" decoding="async">
+					</div>
+					<button class="nav prev" aria-label="Ảnh trước">‹</button>
+					<button class="nav next" aria-label="Ảnh sau">›</button>
+					<div class="dots" aria-label="Chọn ảnh"></div>
+				</div>
+
+				<p class="media-paragraph">Bên cạnh những tiết mục nhảy cổ vũ đầy năng lượng, phần trình diễn âm nhạc nghệ thuật với nhiều loại nhạc cụ đa dạng: piano, guitar, trống,... đã đem đến sự giao thoa thú vị giữa tinh hoa truyền thống cùng những giá trị hiện đại, góp phần tạo nên những phút giây sâu lắng, du dương chạm đến cảm xúc người nghe.</p>
+
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/cheerday/3/IMG_8845.webp" alt="Liên hoan Nhạc cụ 1" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_8863.webp" alt="Liên hoan Nhạc cụ 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_9108.webp" alt="Liên hoan Nhạc cụ 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_9127.webp" alt="Liên hoan Nhạc cụ 4" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_9144.webp" alt="Liên hoan Nhạc cụ 5" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_9201.webp" alt="Liên hoan Nhạc cụ 6" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_9206.webp" alt="Liên hoan Nhạc cụ 7" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/3/IMG_9220.webp" alt="Liên hoan Nhạc cụ 8" loading="lazy" decoding="async">
+					</div>
+					<button class="nav prev" aria-label="Ảnh trước">‹</button>
+					<button class="nav next" aria-label="Ảnh sau">›</button>
+					<div class="dots" aria-label="Chọn ảnh"></div>
+				</div>
+
+				<p class="media-paragraph">Chung cuộc, kết quả nhóm nhà M đã trở thành chủ nhân của giải Nhất Cheerdance 2025, nhóm nhà P trở thành Á quân của cuộc thi, giải Ba gọi tên các nhóm nhà V, nhà E và giải Khuyến Khích lần lượt thuộc về các nhóm nhà S, nhà A, nhà D, nhà I. Cùng với đó, giải Hoa khôi Thể thao và Nam thần Cổ vũ đã tìm được chủ nhân xứng đáng là các cô gái tài năng đến từ nhà P và các chàng trai của nhà Adetis!</p>
+
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/cheerday/4/IMG_9312.webp" alt="8 nhà nhận giải thưởng Cheerdance" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/4/PHA06020.webp" alt="8 nhà nhận giải thưởng 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/4/PHA06022.webp" alt="8 nhà nhận giải thưởng 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/4/PHA06040.webp" alt="8 nhà nhận giải thưởng 4" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/4/PHA06010.webp" alt="Hoa khôi nhà P và Nam thần nhà A" loading="lazy" decoding="async">
+					</div>
+					<button class="nav prev" aria-label="Ảnh trước">‹</button>
+					<button class="nav next" aria-label="Ảnh sau">›</button>
+					<div class="dots" aria-label="Chọn ảnh"></div>
+				</div>
+
+				<p class="media-paragraph">Không kém phần được chờ đón chính là kết quả giải Liên hoan Tài năng Nhạc cụ Học sinh với ngôi vị Quán quân thuộc về nhà E, nhà P; giải Nhì gọi tên nhà S, nhà A; nhà M, nhà I, nhà D lần lượt về đích với giải Ba và giải Khuyến khích được trao cho nhà V chung cuộc.</p>
+
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/cheerday/5/IMG_9325.webp" alt="8 nhà nhận giải thưởng Nhạc cụ" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/5/IMG_9327.webp" alt="8 nhà nhận giải thưởng Nhạc cụ 2" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/5/IMG_9334.webp" alt="8 nhà nhận giải thưởng Nhạc cụ 3" loading="lazy" decoding="async">
+						<img data-original="../photo/cheerday/5/IMG_9340.webp" alt="8 nhà nhận giải thưởng Nhạc cụ 4" loading="lazy" decoding="async">
+					</div>
+				<button class="nav prev" aria-label="Ảnh trước">‹</button>
+				<button class="nav next" aria-label="Ảnh sau">›</button>
+				<div class="dots" aria-label="Chọn ảnh"></div>
+			</div>
+<p class="media-paragraph">Xin chúc các nhóm nhà có phần thể hiện xuất sắc để tiếp tục vươn lên bứt phá tại các hoạt động tiếp theo của Sparkling Chu Văn An! </p>
+</main>
+
+	<script>
+		// Initialize media galleries once DOM is parsed and set image sources with WebP fallback
+		document.addEventListener('DOMContentLoaded', function() {
+			// Assign image sources using WebP->original fallback
+			document.querySelectorAll('.media-gallery .slides img').forEach(function(img){
+				const original = img.getAttribute('data-original');
+				if (original) setImageWithWebp(img, original);
+			});
+			initGalleries();
+
+			// Hover effect for result cards
+			document.querySelectorAll('.result-card').forEach(card => {
+				card.addEventListener('mouseenter', () => {
+					card.style.transform = 'translateY(-5px)';
+					card.style.boxShadow = '0 10px 30px rgba(255,255,255,0.1)';
+				});
+				card.addEventListener('mouseleave', () => {
+					card.style.transform = 'translateY(0)';
+					card.style.boxShadow = 'none';
+				});
+			});
+		});
+	</script>
+			
+</body>
+</html>
