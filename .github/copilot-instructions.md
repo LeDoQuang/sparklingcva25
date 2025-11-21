@@ -1,3 +1,66 @@
+<!-- Copilot instructions for Sparkling CVA 2025 -->
+# Sparkling CVA 2025 — AI Agent Guidance
+
+This repository is a small, static website (plain HTML/CSS/JS) for an event. There is no build toolchain — files are served directly from the filesystem or a lightweight static server. The notes below capture the minimal, high-value information an AI coding agent needs to be immediately productive.
+
+1) Big picture
+- **Static site**: HTML pages, `style.css`, and `script.js` drive the UI. No bundler, no server-side code.
+- **Primary interactive page**: `phatdong/index_clean.html` is the canonical gallery page. `phatdong/index.html` may be corrupted by sync merges — prefer the clean file for edits and preview.
+- **House orbit & points**: `script.js` builds a dynamic “house orbit” from `ttin.txt` and `points.json`. `ttin.txt` can be either a JSON array or a prose format parsed by `parseHouseProseDetailed`.
+
+2) Key files and responsibilities
+- `phatdong/index_clean.html`: Primary gallery and canonical data array `data` (edit slides here).
+- `phatdong/index.html`: Legacy / possibly corrupted by sync. Do not edit unless you will replace it atomically.
+- `script.js`: Single source of runtime logic: background handling, IntersectionObserver reveals, countdown, house orbit builder, `setImageWithWebp`, points override, ranking algorithm.
+- `ttin.txt`: Holds house metadata. Accepts either JSON array (preferred) or prose blocks starting with `NHÀ X:` — `script.js` will parse both.
+- `points.json`: Optional override for weekly points. Accepts either an array (`[{code:'a',points:123},...]`) or an object `{ points: [...] }`.
+- `photo/`: All images and avatars (WebP preferred). Code attempts `.webp` first and falls back to original extension.
+
+3) Important runtime patterns & conventions
+- Image preference: functions named `setImageWithWebp` rewrite filenames to `.webp` and set `onerror` to fall back to original. When adding images, include `.webp` versions if possible.
+- Data loading: `script.js` fetches `ttin.txt` and `points.json` with `{ cache: 'no-store' }`. It accepts both formats and will merge prose details into JSON.
+- Ranking: competition ranking is used (ties share rank, next rank skips accordingly). See `render()` in `script.js`.
+- Animation/build-on-reveal: many heavy builders run only after their section intersects the viewport (IntersectionObserver). Tests should trigger the section reveal or run code in a browser preview.
+
+4) Developer workflow (how to preview/test)
+- Quick preview: open `phatdong/index_clean.html` directly in a browser for static checks.
+- Recommended local server: from repo root run:
+```bash
+python -m http.server 8000
+# then open http://localhost:8000/phatdong/index_clean.html
+```
+- When editing `phatdong/index.html` (the non-clean file), **stop sync/merge tools first** (OneDrive, etc.), then replace the entire file with the clean version to avoid repeated concatenated merges.
+
+5) Project-specific patterns to follow
+- Always keep files in UTF-8 and preserve Vietnamese diacritics in filenames and links — do not rename images unless you update every reference.
+- Prefer editing `phatdong/index_clean.html` rather than `phatdong/index.html` to avoid merged garbage.
+- When adding house data, update `ttin.txt` (JSON array recommended) and/or `points.json` if you're updating scores only. Examples below.
+
+6) Examples
+- Minimal `points.json` (array form):
+```json
+[ { "code": "a", "points": 480 }, { "code": "p", "points": 440 } ]
+```
+- `ttin.txt` JSON array example (top of file):
+```json
+[ { "code": "a", "name": "Adetis", "points": 450, "image": "photo/a.webp", "info": "..." } ]
+```
+- Prose snippet accepted by parser (also valid inside `ttin.txt`):
+```
+𝄞 NHÀ A: #ADETIS - SÁO MÈO KÉP - SỰ LINH HOẠT
+Giữa những triền ruộng bậc thang... (full paragraph)
+```
+
+7) Integration & extension notes
+- `script.js` merges `ttin.txt` (JSON or prose) with `points.json` overrides. Any new external data feeds must match these shapes or be converted client-side.
+- If you add new interactive sections, follow the existing pattern: delay heavy DOM building until the section enters view, and use `setImageWithWebp` for images.
+
+8) Troubleshooting hints (common problems)
+- Symptom: `phatdong/index.html` contains multiple full HTML documents — fix by replacing the file with `index_clean.html` and disabling sync while editing.
+- Symptom: Vietnamese characters appear garbled — ensure `<meta charset="utf-8">` at top and file encoding is UTF-8.
+- Symptom: house points not updated — check `points.json` format (array vs `{ points: [...] }`) and that filenames/case match codes used in `ttin.txt`.
+
+If anything is unclear or you want the instructions expanded (more examples, test checklist, or a small CI job to validate `phatdong/index.html` vs `index_clean.html`), tell me which section to expand and I will iterate.
 <!-- Copilot / AI agent instructions for Sparkling CVA 2025 repo -->
 # Guidance for AI coding agents
 
