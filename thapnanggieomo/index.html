@@ -1,265 +1,631 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Hoạt động Thiện nguyện Thắp Nắng Gieo Mơ - Sparkling CVA 2025">
-  <title>Thắp Nắng Gieo Mơ - SPARKLING CVA 2025</title>
-  <link rel="icon" type="image/webp" href="../photo/dau.webp">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
-  <style>
-    .event-hero {
-      min-height: 60vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      padding: 3rem 5%;
-      background: linear-gradient(180deg, rgba(124,255,178,0.1) 0%, rgba(255,209,102,0.05) 100%);
-    }
-    .event-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-    .event-date {
-      font-size: clamp(1.2rem, 2vw, 1.8rem);
-      color: #7cffb2;
-      margin-bottom: 2rem;
-      font-weight: 600;
-    }
-    .back-button {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      z-index: 100;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: rgba(17, 24, 43, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(106, 227, 255, 0.3);
-      border-radius: 50px;
-      color: var(--ink);
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    .back-button:hover {
-      background: rgba(106, 227, 255, 0.15);
-      transform: translateX(-5px);
-      box-shadow: 0 5px 20px rgba(106, 227, 255, 0.3);
-    }
-    .back-button::before {
-      content: '←';
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .event-content {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 3rem 5%;
-    }
-    .event-section {
-      margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.8s ease-out forwards;
-    }
-    .event-section:nth-child(1) { animation-delay: 0.1s; }
-    .event-section:nth-child(2) { animation-delay: 0.2s; }
-    .event-section:nth-child(3) { animation-delay: 0.3s; }
-    .event-section:nth-child(4) { animation-delay: 0.4s; }
-    .event-section:nth-child(5) { animation-delay: 0.5s; }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .event-section h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 1.5rem;
-      text-align: left;
-      background: linear-gradient(135deg, #7cffb2, #ffd166);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .event-section p {
-      margin-bottom: 1rem;
-      line-height: 1.8;
-    }
-    .highlight-box {
-      background: rgba(124,255,178,0.08);
-      border-left: 4px solid #7cffb2;
-      padding: 1.5rem;
-      border-radius: 12px;
-      margin: 2rem 0;
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-    .info-card {
-      background: var(--card);
-      padding: 1.5rem;
-      border-radius: 16px;
-      border: 1px solid rgba(124,255,178,0.2);
-      transition: all 0.3s ease;
-    }
-    .info-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(124,255,178,0.2);
-      border-color: #7cffb2;
-    }
-    .info-card h3 {
-      color: #7cffb2;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-    .donation-box {
-      background: var(--card);
-      padding: 2rem;
-      border-radius: 16px;
-      border: 2px solid rgba(255,209,102,0.3);
-      margin: 2rem 0;
-    }
-    .donation-box h3 {
-      color: #ffd166;
-      margin-bottom: 1rem;
-      font-size: 1.5rem;
-    }
-    .donation-list {
-      display: grid;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .donation-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      background: rgba(124,255,178,0.05);
-      border-radius: 8px;
-    }
-    .donation-item::before {
-      content: '🎁';
-      font-size: 1.5rem;
-    }
-    @media (max-width: 768px) {
-      .back-button {
-        top: 1rem;
-        left: 1rem;
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-      }
-      .event-hero {
-        min-height: 50vh;
-      }
-    }
-  </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Giải Nhảy Cổ Vũ & Liên Hoan Nhạc Cụ</title>
+	<link rel="stylesheet" href="../style.css">
+	<style>
+		/* Page-scoped styles for the gallery layout */
+		body { 
+			max-width: none; 
+			/* Add dark patterned background so light text is visible */
+			background-image: url('../photo/bg1.webp');
+			background-repeat: repeat;
+			background-position: top center;
+			background-size: 100% auto;
+		}
+		.pd-wrapper {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 3rem 5%;
+		}
+		.pd-title { text-align: center; margin-bottom: 2rem; }
+		.pd-split {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 2.5rem;
+			align-items: start;
+		}
+		.pd-frame {
+			position: relative;
+			border-radius: 16px;
+			overflow: visible;
+			background: rgba(255,255,255,0.04);
+			border: 1px solid rgba(255,255,255,0.15);
+			box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+		}
+		.house-final-card:hover {
+			transform: translateY(-10px);
+			border-color: var(--brand);
+			box-shadow: 0 20px 60px rgba(106, 227, 255, 0.5);
+		}
+		.house-header-final {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 2;
+			width: 120px;
+			height: 180px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			pointer-events: none;
+		}
+
+		.house-logo-frame-final {
+			position: absolute;
+			top: 10px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 110px;
+			height: 110px;
+			border-radius: 50%;
+			border: 4px solid var(--brand);
+			background: none;
+			z-index: 1;
+			pointer-events: none;
+		}
+		.house-icon-final {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			overflow: hidden;
+			border: 3px solid var(--brand);
+			box-shadow: 0 0 25px rgba(106, 227, 255, 0.5);
+			flex-shrink: 0;
+			transition: all 0.5s;
+			position: relative;
+			z-index: 2;
+			margin-top: 15px;
+		}
+		.house-final-card:hover .house-icon-final {
+			transform: rotate(360deg) scale(1.1);
+		}
+		.house-icon-final img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
+		.house-name-final {
+			font-size: 3.5rem;
+			font-weight: 800;
+			text-align: center;
+			color: var(--brand);
+			font-family: 'BlazeGlory', 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+			text-shadow: 0 0 20px rgba(106, 227, 255, 0.6);
+			position: relative;
+			z-index: 2; /* ensure above lines */
+			margin-bottom: 2rem;
+		}
+		.house-classes-final {
+			position: relative;
+			z-index: 1;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 0.6rem;
+      margin-top: 2rem;
+		}
+		.house-classes-final li {
+			background: rgba(106, 227, 255, 0.12);
+			padding: 0.6rem 0.8rem;
+			/* Diamond shape for class frames */
+			clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%);
+			border: 1px solid rgba(106, 227, 255, 0.3);
+			font-size: 0.9rem;
+			font-weight: 500;
+			text-align: center;
+			color: var(--brand);
+			opacity: 0;
+			transform: translateY(-80px) rotateX(90deg) scale(0.5);
+			animation: flipIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+			transition: all 0.3s ease;
+			transform-style: preserve-3d;
+			perspective: 1000px;
+		}
+		/* Thin vertical stripe (khung dọc) - under content */
+		.house-final-card::before {
+			content: '';
+			position: absolute;
+			left: 10px;
+			top: 12px;
+			bottom: 12px;
+			width: 4px;
+			border-radius: 2px;
+			background: linear-gradient(180deg, color-mix(in srgb, var(--house-color, var(--brand)) 80%, transparent), transparent);
+			pointer-events: none;
+			z-index: 0;
+		}
+		.house-classes-final li:hover {
+			transform: translateY(-5px) scale(1.05) rotateZ(2deg);
+			box-shadow: 0 8px 20px rgba(106, 227, 255, 0.4);
+			background: rgba(106, 227, 255, 0.2);
+			border-color: var(--brand);
+		}
+		.house-classes-final li:nth-child(1) { animation-delay: 0.15s; }
+		.house-classes-final li:nth-child(2) { animation-delay: 0.25s; }
+		.house-classes-final li:nth-child(3) { animation-delay: 0.35s; }
+		.house-classes-final li:nth-child(4) { animation-delay: 0.45s; }
+		.house-classes-final li:nth-child(5) { animation-delay: 0.55s; }
+		.house-classes-final li:nth-child(6) { animation-delay: 0.65s; }
+		.house-classes-final li:nth-child(7) { animation-delay: 0.75s; }
+		.house-classes-final li:nth-child(8) { animation-delay: 0.85s; }
+		/* Center last item when there are 7 classes (for houses S and P) */
+		.house-classes-final li:nth-child(7):last-child {
+			grid-column: 2 / 3;
+		}
+		@keyframes flipIn {
+			0% {
+				opacity: 0;
+				transform: translateY(-80px) rotateX(90deg) scale(0.5);
+			}
+			60% {
+				transform: translateY(10px) rotateX(-10deg) scale(1.05);
+			}
+			100% {
+				opacity: 1;
+				transform: translateY(0) rotateX(0deg) scale(1);
+			}
+		}
+		.house-card {
+			position: relative;
+			background: radial-gradient(circle at center, rgba(106, 227, 255, 0.15), rgba(124, 255, 178, 0.05));
+			border: 2px solid rgba(106, 227, 255, 0.4);
+			border-radius: 20px;
+			padding: 2rem;
+			backdrop-filter: blur(15px);
+			cursor: pointer;
+			transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+			overflow: visible;
+			min-height: 350px;
+		}
+		.house-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 15px 40px rgba(106, 227, 255, 0.5);
+			border-color: var(--brand);
+		}
+		.house-header {
+			position: relative;
+			z-index: 10;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.8rem;
+			margin-bottom: 2rem;
+			text-align: center;
+		}
+		.house-icon {
+			width: 120px;
+			height: 120px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: radial-gradient(circle, rgba(106, 227, 255, 0.3), transparent);
+			border: 3px solid rgba(106, 227, 255, 0.6);
+			transition: all 0.5s;
+			overflow: hidden;
+			flex-shrink: 0;
+			padding: 0;
+			box-shadow: 0 0 20px rgba(106, 227, 255, 0.4),
+			            inset 0 0 20px rgba(106, 227, 255, 0.2);
+		}
+		.house-icon img {
+			width: 120%;
+			height: 120%;
+			object-fit: cover;
+			object-position: center;
+			filter: drop-shadow(0 4px 12px rgba(106, 227, 255, 0.6));
+		}
+		.house-name {
+			position: relative;
+			z-index: 1;
+			font-size: 1.4rem;
+			font-weight: 700;
+			background: var(--gradient);
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			text-shadow: 0 0 20px rgba(106, 227, 255, 0.3);
+		}
+		/* Class list */
+		.house-classes {
+			position: relative;
+			z-index: 1;
+			list-style: none;
+			padding: 0;
+			margin: 1.5rem 0 0 0;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 0.6rem;
+		}
+		.house-classes li {
+			background: rgba(106, 227, 255, 0.08);
+			padding: 0.6rem 1rem;
+			border-radius: 10px;
+			border: 1px solid rgba(106, 227, 255, 0.3);
+			font-size: 0.9rem;
+			font-weight: 500;
+			text-align: center;
+			color: var(--brand);
+			transition: all 0.3s ease;
+		}
+		.house-classes li:hover {
+			background: rgba(106, 227, 255, 0.15);
+			border-color: var(--brand);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(106, 227, 255, 0.3);
+		}
+		.house-classes li:last-child {
+			border-bottom: none;
+		}
+		@keyframes slideInClass {
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+		@keyframes sparkle {
+			0%, 100% { 
+				transform: translateX(0); 
+				text-shadow: none;
+			}
+			50% { 
+				transform: translateX(5px); 
+				text-shadow: 0 0 10px rgba(106, 227, 255, 0.8);
+			}
+		}
+		.house-classes li::before {
+			content: '✦';
+			margin-right: 0.5rem;
+			color: var(--brand);
+			opacity: 0.7;
+		}
+
+		/* Back button */
+		.back-button {
+			position: fixed;
+			top: 2rem;
+			left: 2rem;
+			z-index: 100;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.75rem 1.5rem;
+			background: rgba(17, 24, 43, 0.9);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(106, 227, 255, 0.3);
+			border-radius: 50px;
+			color: var(--ink);
+			text-decoration: none;
+			font-weight: 600;
+			transition: all 0.3s ease;
+		}
+		.back-button:hover {
+			background: rgba(106, 227, 255, 0.15);
+			transform: translateX(-5px);
+			box-shadow: 0 5px 20px rgba(106, 227, 255, 0.3);
+		}
+		.back-button::before {
+			content: '←';
+			font-size: 1.5rem;
+			line-height: 1;
+		}
+
+		@media (max-width: 900px) {
+			.houses-final-grid { grid-template-columns: 1fr; }
+			.house-header-final { flex-direction: column; text-align: center; }
+			.house-classes-final { grid-template-columns: repeat(3, 1fr); }
+			.back-button {
+				top: 1rem;
+				left: 1rem;
+				padding: 0.5rem 1rem;
+				font-size: 0.9rem;
+			}
+		}
+	.pd-dots {
+			display: flex; gap: .5rem; align-items: center; flex-wrap: wrap;
+		}
+		.pd-dot {
+			width: 28px; height: 28px; border-radius: 999px;
+			border: 1px solid rgba(255,255,255,0.25);
+			background: rgba(0,0,0,0.35);
+			color: #e6f0ff; font-size: 0.85rem; line-height: 28px; text-align: center;
+			cursor: pointer;
+		}
+		.pd-dot[aria-current="true"] { border-color: var(--brand); color: var(--brand); background: rgba(106,227,255,0.12); }
+		@media (max-width: 900px) {
+			.pd-split { grid-template-columns: 1fr; }
+			.pd-frame { min-height: 300px; }
+		}
+
+
+		/* Media article + galleries */
+		.media-article { margin: 1rem 0 3rem; }
+		.media-article .article-inner { max-width: 1100px; margin: 0 auto; }
+		.media-paragraph { color: #e6f0ff; font-size: 1.25rem; line-height: 1.9; text-align: justify; margin: 1.5rem 0; }
+
+		/* Modern highlight-style gallery */
+		.media-gallery {
+			position: relative;
+			margin: 2rem 0;
+			border-radius: 24px;
+			overflow: hidden;
+			background: linear-gradient(135deg, rgba(106, 227, 255, 0.08), rgba(124, 255, 178, 0.05));
+			border: 2px solid rgba(106, 227, 255, 0.3);
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(106, 227, 255, 0.15);
+			backdrop-filter: blur(20px);
+			animation: galleryAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+		@keyframes galleryAppear {
+			from { opacity: 0; transform: translateY(30px) scale(0.95); }
+			to { opacity: 1; transform: translateY(0) scale(1); }
+		}
+		.media-gallery .slides {
+			position: relative;
+			width: 100%;
+			min-height: 500px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: rgba(0, 0, 0, 0.2);
+		}
+		.media-gallery .slides img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			opacity: 0;
+			transform: scale(0.9);
+			transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+			pointer-events: none;
+		}
+		.media-gallery .slides img.active {
+			opacity: 1;
+			transform: scale(1);
+			pointer-events: auto;
+			animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+		@keyframes slideIn {
+			from { opacity: 0; transform: scale(0.92) translateX(30px); }
+			to { opacity: 1; transform: scale(1) translateX(0); }
+		}
+		/* Hide progress bars */
+		.media-gallery .progress-bars {
+			display: none;
+		}
+		/* Navigation buttons - modern glassmorphic */
+		.media-gallery .nav {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 48px;
+			height: 48px;
+			border-radius: 50%;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			background: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(10px);
+			color: #fff;
+			font-size: 24px;
+			cursor: pointer;
+			display: grid;
+			place-items: center;
+			z-index: 5;
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+		}
+		.media-gallery .nav:hover {
+			background: rgba(106, 227, 255, 0.25);
+			border-color: var(--brand);
+			transform: translateY(-50%) scale(1.1);
+			box-shadow: 0 6px 30px rgba(106, 227, 255, 0.4);
+		}
+		.media-gallery .nav:active { transform: translateY(-50%) scale(0.95); }
+		.media-gallery .prev { left: 16px; }
+		.media-gallery .next { right: 16px; }
+		/* Hide counter and play/pause controls */
+		.media-gallery .counter,
+		.media-gallery .play-pause {
+			display: none;
+		}
+		/* Responsive */
+		@media (max-width: 768px) {
+			.media-gallery .slides { min-height: 300px; }
+			.media-gallery .nav { width: 40px; height: 40px; font-size: 20px; }
+			.media-gallery .prev { left: 8px; }
+			.media-gallery .next { right: 8px; }
+			.media-gallery .progress-bars { padding: 8px 8px 0; gap: 2px; }
+			.media-gallery .counter { font-size: 12px; padding: 6px 16px; }
+		}
+	</style>
+	<script>
+		// Fallback WebP -> original extension if needed
+		function setImageWithWebp(img, original) {
+			if (!img || !original) return;
+			const dot = original.lastIndexOf('.');
+			const webp = dot > -1 ? original.slice(0, dot) + '.webp' : original + '.webp';
+			img.onerror = function() { img.onerror = null; img.src = original; };
+			img.src = webp;
+		}
+
+		// Modern highlight-style gallery initializer with progress bars
+		function initGalleries() {
+			const galleries = document.querySelectorAll('.media-gallery');
+			galleries.forEach((gal, galIdx) => {
+				const slides = Array.from(gal.querySelectorAll('.slides img'));
+				const prevBtn = gal.querySelector('.nav.prev');
+				const nextBtn = gal.querySelector('.nav.next');
+				
+				if (!slides.length) return;
+				
+				let i = 0, timer, isPlaying = true;
+				const duration = 7000; // 7s per slide
+				
+				// No progress bars needed anymore
+				
+				// No counter needed
+				
+				// No play/pause button needed
+				
+				function render() {
+					slides.forEach((img, idx) => img.classList.toggle('active', idx === i));
+				}
+				
+				function go(n) {
+					i = (n + slides.length) % slides.length;
+					render();
+					if (isPlaying) startTimer();
+				}
+				
+				function startTimer() {
+					clearTimeout(timer);
+					timer = setTimeout(() => {
+						if (isPlaying) go(i + 1);
+					}, duration);
+				}
+				
+				function play() {
+					if (!isPlaying) {
+						isPlaying = true;
+						startTimer();
+					}
+				}
+				
+				function pause() {
+					isPlaying = false;
+					clearTimeout(timer);
+				}
+				
+				if (prevBtn) {
+					prevBtn.addEventListener('click', () => {
+						pause();
+						go(i - 1);
+					});
+				}
+				if (nextBtn) {
+					nextBtn.addEventListener('click', () => {
+						pause();
+						go(i + 1);
+					});
+				}
+				
+				// Pause on hover, resume on leave
+				gal.addEventListener('mouseenter', pause);
+				gal.addEventListener('mouseleave', play);
+				
+				// Keyboard navigation
+				if (galIdx === 0) {
+					document.addEventListener('keydown', (e) => {
+						if (e.key === 'ArrowLeft') {
+							pause();
+							go(i - 1);
+						} else if (e.key === 'ArrowRight') {
+							pause();
+							go(i + 1);
+						}
+					});
+				}
+				
+				// Start
+				render();
+				startTimer();
+			});
+		}
+	</script>
+	<link rel="icon" type="image/webp" href="../photo/dau.webp">
 </head>
 <body>
-  <a href="../index.html" class="back-button">Quay lại</a>
+	<a href="../" class="back-button" aria-label="Quay lại trang chủ">Quay lại</a>
+	<main class="pd-wrapper">
+		<section class="media-article reveal">
+			<div class="article-inner">
+				<h2 class="section-title" style="font-size:4rem;line-height:1.15;text-align:center;margin-bottom:2.4rem;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">HOẠT ĐỘNG THIỆN NGUYỆN “THẮP NẮNG GIEO MƠ”: THẮP LỬA NIỀM TIN, GIEO MẦM ƯỚC MƠ</h2>
 
-  <section class="event-hero">
-    <h1>THẮP NẮNG GIEO MƠ</h1>
-    <div class="event-date">🌟 16/11/2025</div>
-    <p style="max-width: 700px; font-size: 1.2rem; opacity: 0.9;">
-      Lan tỏa yêu thương, mang ánh sáng tri thức đến với các em học sinh vùng cao Đông Lĩnh - Phú Thọ
-    </p>
-  </section>
+				<p class="media-paragraph">Nằm trong khuôn khổ cuộc thi “Vẻ đẹp học sinh Chu Văn An - Sparkling Chu Văn An 2025”, sự kiện “Thắp nắng gieo mơ” tại trường Tiểu học Đông Lĩnh (Phú Thọ) ngày 16/11 đã để lại trong lòng thế hệ trẻ Thủ đô dấu ấn sâu đậm về lòng biết ơn và tinh thần nhân ái. Từ mảnh đất Hà Nội nghìn năm văn hiến, trường THPT Chuyên Chu Văn An đã mang đến Đông Lĩnh hai màn trình diễn flashmob trẻ trung, năng động, tạo nên những khoảnh khắc gắn kết đáng nhớ giữa học sinh hai trường.</p>
+				<div class="media-gallery">
+					<div class="slides" style="min-height:540px;">
+						<img data-original="../photo/donglinh/flashmob 10 phap 2.webp" alt="Tiết mục flashmob lớp 10 Pháp 2" loading="lazy" decoding="async">
+					</div>
+				</div>
 
-  <div class="event-content">
-    <div class="event-section">
-      <h2>Về chương trình</h2>
-      <p>
-        "Thắp Nắng Gieo Mơ" là hoạt động thiện nguyện ý nghĩa nhất trong chuỗi sự kiện Sparkling CVA 2025. Đây là dịp để các bạn học sinh Chu Văn An thể hiện trách nhiệm xã hội, lan tỏa yêu thương và mang lại niềm vui cho các em nhỏ vùng cao.
-      </p>
-      <div class="highlight-box">
-        <strong>🎯 Ý nghĩa:</strong> Không chỉ là trao quà, chúng ta còn mang đến tri thức, niềm tin và ước mơ cho các em. Mỗi món quà là một hạt giống hy vọng.
-      </div>
-    </div>
+				<p class="media-paragraph">Những tiết mục độc đáo từ tám nhóm nhà - tám giai điệu dân gian truyền thống đã đem đến cho Tiểu học Đông Lĩnh - Phú Thọ một không gian trải nghiệm đặc biệt, hòa thành một bản nhạc tràn đầy năng lượng và yêu thương. Thanh âm tự hào của quê hương vang lên khắp đồi núi, du dương qua mọi thung sâu, là cây cầu nối liền giữa quá khứ và hiện tại, giữa những kỷ niệm với hành trang tương lai.</p>
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/donglinh/tiet muc cac nha/1.webp" alt="Tiết mục văn nghệ dân gian 1" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/2.webp" alt="Tiết mục văn nghệ dân gian 2" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/3.webp" alt="Tiết mục văn nghệ dân gian 3" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/4.webp" alt="Tiết mục văn nghệ dân gian 4" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/5.webp" alt="Tiết mục văn nghệ dân gian 5" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/6.webp" alt="Tiết mục văn nghệ dân gian 6" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/7.webp" alt="Tiết mục văn nghệ dân gian 7" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tiet muc cac nha/8.webp" alt="Tiết mục văn nghệ dân gian 8" loading="lazy" decoding="async">
+					</div>
+					<button class="nav prev" aria-label="Ảnh trước">‹</button>
+					<button class="nav next" aria-label="Ảnh sau">›</button>
+					<div class="dots" aria-label="Chọn ảnh"></div>
+				</div>
 
-    <div class="event-section">
-      <h2>Thông tin chi tiết</h2>
-      <div class="info-grid">
-        <div class="info-card">
-          <h3>📍 Địa điểm</h3>
-          <p>Trường TH Đông Lĩnh, Phú Thọ</p>
-        </div>
-        <div class="info-card">
-          <h3>⏰ Thời gian</h3>
-          <p>Cả ngày 16/11/2025</p>
-        </div>
-        <div class="info-card">
-          <h3>👥 Tham gia</h3>
-          <p>Ban tổ chức + đại diện 8 nhà</p>
-        </div>
-        <div class="info-card">
-          <h3>🚌 Di chuyển</h3>
-          <p>Xe bus xuất phát 6:00 sáng</p>
-        </div>
-      </div>
-    </div>
+				<p class="media-paragraph">Bên cạnh đó, công trình “Nhà truyền thống trường Tiểu học Đông Lĩnh” đã được khánh thành với tổng trị giá 60 triệu đồng và gần 700 cuốn sách và truyện thiếu nhi, mở ra không gian học tập nơi các em học sinh Tiểu học Đông Lĩnh có thể thỏa sức khám phá và nuôi dưỡng ước mơ. Đây cũng là lời tri ân sâu sắc mà thầy và trò trường Bưởi - Chu Văn An muốn gửi gắm đến ngôi trường đã dang rộng vòng tay đón nhận nhà trường trong những năm kháng chiến gian khó, qua đó khẳng định truyền thống “Uống nước nhớ nguồn, đền ơn đáp nghĩa” cao đẹp đối với mỗi học sinh.</p>
+				<div class="media-gallery">
+					<div class="slides" style="min-height:540px;">
+						<img data-original="../photo/donglinh/khanh thanh ntt.webp" alt="Khánh thành Nhà truyền thống Đông Lĩnh" loading="lazy" decoding="async">
+					</div>
+				</div>
 
-    <div class="event-section">
-      <h2>Chương trình hoạt động</h2>
-      <p><strong>6:00 - 8:30:</strong> Tập trung và di chuyển đến Đông Lĩnh</p>
-      <p><strong>8:30 - 9:00:</strong> Gặp gỡ ban giám hiệu và học sinh địa phương</p>
-      <p><strong>9:00 - 11:00:</strong> Trao quà, dạy học, sinh hoạt văn nghệ cùng các em</p>
-      <p><strong>11:00 - 12:30:</strong> Ăn trưa và giao lưu</p>
-      <p><strong>12:30 - 14:00:</strong> Hoạt động vui chơi ngoài trời, trồng cây</p>
-      <p><strong>14:00 - 17:00:</strong> Trở về Hà Nội</p>
-    </div>
+				<p class="media-paragraph">Ngoài ra, dự án Chuolingo - dự án dạy học tiếng Anh đặc biệt dành riêng cho các em tại trường Tiểu học Đông Lĩnh vào mỗi cuối tuần, tiếp tục được duy trì với sự đồng hành trực tiếp của các bạn học sinh trường THPT Chuyên Chu Văn An. Đồng thời, quà tặng gồm 150 chiếc giường gấp đến từ tập thể lớp 11 Anh 1 cùng nhiều vật dụng thiết yếu phục vụ cho việc dạy và học đến từ các nhóm nhà góp phần trang bị cho nhà trường ngày một khang trang hơn.</p>
+				<div class="media-gallery">
+					<div class="slides" style="min-height:540px;">
+						<img data-original="../photo/donglinh/11 anh.webp" alt="Tập thể lớp 11 Anh 1 và Chuolingo" loading="lazy" decoding="async">
+					</div>
+				</div>
 
-    <div class="event-section">
-      <h2>Danh mục đóng góp</h2>
-      <div class="donation-box">
-        <h3>Chúng ta cần chuẩn bị:</h3>
-        <div class="donation-list">
-          <div class="donation-item">
-            <span><strong>Sách vở, dụng cụ học tập:</strong> Vở, bút, thước, tập vẽ, màu...</span>
-          </div>
-          <div class="donation-item">
-            <span><strong>Quần áo ấm:</strong> Áo khoác, khăn quàng, găng tay...</span>
-          </div>
-          <div class="donation-item">
-            <span><strong>Đồ chơi giáo dục:</strong> Tranh ghép, đồ chơi logic, sách truyện...</span>
-          </div>
-          <div class="donation-item">
-            <span><strong>Lương thực:</strong> Gạo, mì tôm, sữa, bánh kẹo...</span>
-          </div>
-          <div class="donation-item">
-            <span><strong>Dụng cụ thể thao:</strong> Bóng đá, cầu lông, nhảy dây...</span>
-          </div>
-        </div>
-      </div>
-      <div class="highlight-box">
-        <strong>📦 Hạn nộp đóng góp:</strong> Trước 14/11 tại phòng Đoàn trường
-      </div>
-    </div>
+				<p class="media-paragraph">Một điểm sáng mới mẻ trong chuyến thăm Đông Lĩnh năm nay chính là không gian sáng tạo với các trò chơi dân gian thú vị, bao gồm: nhảy bao bố, nhảy sạp, chơi chuyền, ô ăn quan. Các nhóm nhà đã chuẩn bị không gian trò chơi và nhiệt tình hướng dẫn các em nhỏ cùng tham gia, tạo nên một bầu không khí sôi nổi, hào hứng giữa học sinh hai ngôi trường.</p>
+				<div class="media-gallery">
+					<div class="slides">
+						<img data-original="../photo/donglinh/tro choi dan gian/1.webp" alt="Trò chơi dân gian nhảy bao bố" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tro choi dan gian/2.webp" alt="Trò chơi dân gian nhảy sạp" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tro choi dan gian/3.webp" alt="Trò chơi dân gian ô ăn quan" loading="lazy" decoding="async">
+						<img data-original="../photo/donglinh/tro choi dan gian/IMG_6902.webp" alt="Trò chơi dân gian chơi chuyền" loading="lazy" decoding="async">
+					</div>
+					<button class="nav prev" aria-label="Ảnh trước">‹</button>
+					<button class="nav next" aria-label="Ảnh sau">›</button>
+					<div class="dots" aria-label="Chọn ảnh"></div>
+				</div>
 
-    <div class="event-section">
-      <h2>Ý nghĩa và kỳ vọng</h2>
-      <p>
-        Qua chuyến đi này, chúng ta không chỉ đơn thuần trao quà mà còn học được ý nghĩa của sự sẻ chia, biết ơn và trách nhiệm với cộng đồng. Những nụ cười của các em sẽ là động lực lớn nhất cho chúng ta.
-      </p>
-      <div class="highlight-box">
-        <strong>💚 Thông điệp:</strong> "Một tấm lòng nhỏ bé, một ước mơ lớn lao"
-      </div>
-    </div>
-  </div>
+				<p class="media-paragraph">Trên hành trình này, những giai điệu ngân vang từ nhạc cụ dân tộc trở thành biểu tượng của tinh thần Chu Văn An tươi sáng, ẩn chứa tình yêu thương, hơi ấm tri thức và lòng biết ơn lan tỏa khắp miền đất trung du. Từng nụ cười rạng rỡ, ánh mắt háo hức của các em đều hòa nhịp vào bản giao hưởng sống động, đánh dấu một khúc ca rực rỡ mang tên Chu Văn An. Chuyến đi cũng là cơ hội quý báu để các học sinh THPT Chuyên Chu Văn An rèn luyện kỹ năng, vun đắp tinh thần nhân ái, vừa là minh chứng sống động cho tình cảm hữu nghị sâu sắc, mối quan hệ đoàn kết, gắn bó bền chặt giữa hai nhà trường.</p>
+			</div>
+		</section>
+	</main>
 
-  <script src="../script.js"></script>
+	<script>
+		// Initialize media galleries once DOM is parsed and set image sources with WebP fallback
+		document.addEventListener('DOMContentLoaded', function() {
+			// Assign image sources using WebP->original fallback
+			document.querySelectorAll('.media-gallery .slides img').forEach(function(img){
+				const original = img.getAttribute('data-original');
+				if (original) setImageWithWebp(img, original);
+			});
+			initGalleries();
+
+			// Hover effect for result cards
+			document.querySelectorAll('.result-card').forEach(card => {
+				card.addEventListener('mouseenter', () => {
+					card.style.transform = 'translateY(-5px)';
+					card.style.boxShadow = '0 10px 30px rgba(255,255,255,0.1)';
+				});
+				card.addEventListener('mouseleave', () => {
+					card.style.transform = 'translateY(0)';
+					card.style.boxShadow = 'none';
+				});
+			});
+		});
+	</script>
+			
 </body>
 </html>
