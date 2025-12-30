@@ -1,323 +1,534 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sparkling Night - Đêm Chung Kết Sparkling CVA 2025">
-  <title>Sparkling Night - SPARKLING CVA 2025</title>
-  <link rel="icon" type="image/webp" href="../photo/dau.webp">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
-  <style>
-    .event-hero {
-      min-height: 70vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      padding: 3rem 5%;
-      background: linear-gradient(180deg, rgba(138,99,255,0.12) 0%, rgba(106,227,255,0.08) 50%, rgba(255,102,196,0.06) 100%);
-      overflow: hidden;
-    }
-    .event-hero::before {
-      content: '';
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(106,227,255,0.2), transparent 70%);
-      animation: float 8s ease-in-out infinite;
-      top: 10%;
-      left: 10%;
-    }
-    .event-hero::after {
-      content: '';
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,102,196,0.2), transparent 70%);
-      animation: float 6s ease-in-out infinite reverse;
-      bottom: 10%;
-      right: 10%;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-30px); }
-    }
-    .event-hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-      margin-bottom: 1rem;
-      line-height: 1.1;
-      position: relative;
-      z-index: 1;
-      text-shadow: 0 0 40px rgba(106,227,255,0.5);
-      animation: glow 3s ease-in-out infinite;
-    }
-    @keyframes glow {
-      0%, 100% { text-shadow: 0 0 40px rgba(106,227,255,0.5); }
-      50% { text-shadow: 0 0 60px rgba(106,227,255,0.8), 0 0 80px rgba(255,102,196,0.4); }
-    }
-    .event-date {
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      background: linear-gradient(135deg, #6ae3ff, #ff66c4);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 2rem;
-      font-weight: 700;
-      position: relative;
-      z-index: 1;
-    }
-    .back-button {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      z-index: 100;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: rgba(17, 24, 43, 0.9);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(106, 227, 255, 0.3);
-      border-radius: 50px;
-      color: var(--ink);
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    .back-button:hover {
-      background: rgba(106, 227, 255, 0.15);
-      transform: translateX(-5px);
-      box-shadow: 0 5px 20px rgba(106, 227, 255, 0.3);
-    }
-    .back-button::before {
-      content: '←';
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .event-content {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 3rem 5%;
-    }
-    .event-section {
-      margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.8s ease-out forwards;
-    }
-    .event-section:nth-child(1) { animation-delay: 0.1s; }
-    .event-section:nth-child(2) { animation-delay: 0.2s; }
-    .event-section:nth-child(3) { animation-delay: 0.3s; }
-    .event-section:nth-child(4) { animation-delay: 0.4s; }
-    .event-section:nth-child(5) { animation-delay: 0.5s; }
-    .event-section:nth-child(6) { animation-delay: 0.6s; }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .event-section h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 1.5rem;
-      text-align: left;
-      background: linear-gradient(135deg, #8a63ff, #6ae3ff, #ff66c4);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .event-section p {
-      margin-bottom: 1rem;
-      line-height: 1.8;
-    }
-    .highlight-box {
-      background: linear-gradient(135deg, rgba(138,99,255,0.08), rgba(106,227,255,0.08));
-      border-left: 4px solid #8a63ff;
-      padding: 1.5rem;
-      border-radius: 12px;
-      margin: 2rem 0;
-    }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-    .info-card {
-      background: var(--card);
-      padding: 1.5rem;
-      border-radius: 16px;
-      border: 1px solid rgba(138,99,255,0.3);
-      transition: all 0.3s ease;
-    }
-    .info-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(138,99,255,0.3);
-      border-color: #8a63ff;
-    }
-    .info-card h3 {
-      color: #8a63ff;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-    .awards-section {
-      background: var(--card);
-      padding: 2rem;
-      border-radius: 16px;
-      border: 2px solid rgba(106,227,255,0.3);
-      margin: 2rem 0;
-    }
-    .award-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      margin: 0.5rem 0;
-      background: rgba(106,227,255,0.05);
-      border-radius: 8px;
-      border-left: 3px solid var(--brand);
-    }
-    .award-icon {
-      font-size: 2rem;
-      min-width: 50px;
-      text-align: center;
-    }
-    @media (max-width: 768px) {
-      .back-button {
-        top: 1rem;
-        left: 1rem;
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-      }
-      .event-hero {
-        min-height: 60vh;
-      }
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparkling Night 2025: Luminaria</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Page-scoped styles for the gallery layout */
+        body { 
+            max-width: none; 
+            background-image: url('../photo/bg1.webp');
+            background-repeat: repeat;
+            background-position: top center;
+            background-size: 100% auto;
+        }
+        .pd-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+        .pd-title { text-align: center; margin-bottom: 2rem; }
+
+        /* Back button */
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 100;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(17, 24, 43, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(106, 227, 255, 0.3);
+            border-radius: 50px;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
+            background: rgba(106, 227, 255, 0.15);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(106, 227, 255, 0.3);
+        }
+        .back-button::before {
+            content: '←';
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 900px) {
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Media article + galleries */
+        .media-article { margin: 1rem 0 3rem; }
+        .media-article .article-inner { max-width: 1100px; margin: 0 auto; }
+        .media-paragraph { color: #e6f0ff; font-size: 1.25rem; line-height: 1.9; text-align: justify; margin: 1.5rem 0; }
+
+        /* Modern highlight-style gallery */
+        .media-gallery {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 24px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(106, 227, 255, 0.08), rgba(124, 255, 178, 0.05));
+            border: 2px solid rgba(106, 227, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(106, 227, 255, 0.15);
+            backdrop-filter: blur(20px);
+            animation: galleryAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes galleryAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .media-gallery .slides {
+            position: relative;
+            width: 100%;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .media-gallery .slides img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        .media-gallery .slides img.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.92) translateX(30px); }
+            to { opacity: 1; transform: scale(1) translateX(0); }
+        }
+        .media-gallery .progress-bars {
+            display: none;
+        }
+        /* Navigation buttons */
+        .media-gallery .nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 5;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .media-gallery .nav:hover {
+            background: rgba(106, 227, 255, 0.25);
+            border-color: var(--brand);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 30px rgba(106, 227, 255, 0.4);
+        }
+        .media-gallery .nav:active { transform: translateY(-50%) scale(0.95); }
+        .media-gallery .prev { left: 16px; }
+        .media-gallery .next { right: 16px; }
+        .media-gallery .counter,
+        .media-gallery .play-pause {
+            display: none;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .media-gallery .slides { min-height: 300px; }
+            .media-gallery .nav { width: 40px; height: 40px; font-size: 20px; }
+            .media-gallery .prev { left: 8px; }
+            .media-gallery .next { right: 8px; }
+        }
+
+        /* Results section styling */
+        .results-section {
+            position: relative;
+            margin: 3rem 0;
+            padding: 2.75rem;
+            border-radius: 24px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(106, 227, 255, 0.15), rgba(124, 255, 178, 0.1), rgba(255, 100, 150, 0.08));
+            border: 2px solid rgba(106, 227, 255, 0.4);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 0 60px rgba(106, 227, 255, 0.25);
+            backdrop-filter: blur(22px);
+        }
+        .results-section:nth-of-type(odd) {
+            background: linear-gradient(135deg, rgba(124, 255, 178, 0.12), rgba(106, 227, 255, 0.1), rgba(255, 200, 100, 0.08));
+            border-color: rgba(124, 255, 178, 0.4);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 0 60px rgba(124, 255, 178, 0.2);
+        }
+        .results-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(106, 227, 255, 0.08), rgba(124, 255, 178, 0.04), transparent);
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        .results-section h3 {
+            position: relative;
+            font-size: 2.1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(90deg, #6ae3ff, #7cffb2, #ffd700, #ff69b4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.02em;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(106, 227, 255, 0.3);
+        }
+        .results-list {
+            position: relative;
+            display: grid;
+            gap: 1rem;
+            margin: 1.5rem 0 0;
+        }
+        .results-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(106, 227, 255, 0.1), rgba(124, 255, 178, 0.05));
+            border: 1px solid rgba(106, 227, 255, 0.35);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 24px rgba(106, 227, 255, 0.15);
+            color: #e6f0ff;
+            font-size: 1.18rem;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .results-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(124, 255, 178, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .results-item:hover {
+            transform: translateX(8px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px rgba(106, 227, 255, 0.25);
+            border-color: rgba(124, 255, 178, 0.5);
+        }
+        .results-item:hover::before {
+            opacity: 1;
+        }
+        .results-item:nth-child(1) {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.08));
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+        .results-item:nth-child(1):hover {
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px rgba(255, 215, 0, 0.3);
+        }
+        .results-item:nth-child(2) {
+            background: linear-gradient(135deg, rgba(106, 227, 255, 0.12), rgba(124, 255, 178, 0.08));
+            border-color: rgba(106, 227, 255, 0.4);
+        }
+        .results-item:nth-child(3) {
+            background: linear-gradient(135deg, rgba(124, 255, 178, 0.12), rgba(106, 227, 255, 0.08));
+            border-color: rgba(124, 255, 178, 0.4);
+        }
+        .results-item:nth-child(4) {
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.12), rgba(255, 182, 193, 0.08));
+            border-color: rgba(255, 105, 180, 0.4);
+        }
+        .results-item:nth-child(4):hover {
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px rgba(255, 105, 180, 0.3);
+        }
+        .results-item:nth-child(5) {
+            background: linear-gradient(135deg, rgba(200, 150, 255, 0.12), rgba(150, 200, 255, 0.08));
+            border-color: rgba(200, 150, 255, 0.4);
+        }
+        .results-item:nth-child(5):hover {
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px rgba(200, 150, 255, 0.3);
+        }
+        .results-rank {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            color: #0b1426;
+            background: linear-gradient(135deg, #7cffb2, #6ae3ff);
+            box-shadow: 0 12px 32px rgba(106, 227, 255, 0.4);
+            flex-shrink: 0;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .results-item:nth-child(1) .results-rank {
+            background: linear-gradient(135deg, #ffd700, #ffb700);
+            box-shadow: 0 12px 32px rgba(255, 215, 0, 0.5);
+        }
+        .results-item:nth-child(2) .results-rank {
+            background: linear-gradient(135deg, #c0c0c0, #a9a9a9);
+            box-shadow: 0 12px 32px rgba(192, 192, 192, 0.4);
+        }
+        .results-item:nth-child(3) .results-rank {
+            background: linear-gradient(135deg, #cd7f32, #b87333);
+            box-shadow: 0 12px 32px rgba(205, 127, 50, 0.4);
+        }
+        .results-item:nth-child(4) .results-rank {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            box-shadow: 0 12px 32px rgba(255, 105, 180, 0.5);
+            color: #fff;
+        }
+        .results-item:nth-child(5) .results-rank {
+            background: linear-gradient(135deg, #9370db, #7b68ee);
+            box-shadow: 0 12px 32px rgba(147, 112, 219, 0.5);
+            color: #fff;
+        }
+        .results-text {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+        .results-text strong {
+            color: #fff;
+            font-weight: 900;
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .results-item:nth-child(1) .results-text strong { color: #ffd700; }
+        .results-item:nth-child(2) .results-text strong { color: #c0c0c0; }
+        .results-item:nth-child(3) .results-text strong { color: #cd7f32; }
+        .results-item:nth-child(4) .results-text strong { color: #ff69b4; }
+        .results-item:nth-child(5) .results-text strong { color: #9370db; }
+        .results-text { color: #e6f0ff; }
+        @media (max-width: 640px) {
+            .results-section { padding: 2.25rem 1.5rem; }
+            .results-section h3 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+            .results-item { font-size: 1.05rem; padding: 1rem 1.2rem; gap: 0.8rem; }
+            .results-rank { width: 48px; height: 48px; font-size: 1.1rem; }
+            .results-text strong { font-size: 0.95rem; }
+        }
+    </style>
+    <script>
+        // Fallback WebP -> original extension if needed
+        function setImageWithWebp(img, original) {
+            if (!img || !original) return;
+            const dot = original.lastIndexOf('.');
+            const webp = dot > -1 ? original.slice(0, dot) + '.webp' : original + '.webp';
+            img.onerror = function() { img.onerror = null; img.src = original; };
+            img.src = webp;
+        }
+
+        // Modern highlight-style gallery initializer
+        function initGalleries() {
+            const galleries = document.querySelectorAll('.media-gallery');
+            galleries.forEach((gal, galIdx) => {
+                const slides = Array.from(gal.querySelectorAll('.slides img'));
+                const prevBtn = gal.querySelector('.nav.prev');
+                const nextBtn = gal.querySelector('.nav.next');
+                
+                if (!slides.length) return;
+                
+                let i = 0, timer, isPlaying = true;
+                const duration = 7000; // 7s per slide
+                
+                function render() {
+                    slides.forEach((img, idx) => img.classList.toggle('active', idx === i));
+                }
+                
+                function go(n) {
+                    i = (n + slides.length) % slides.length;
+                    render();
+                    if (isPlaying) startTimer();
+                }
+                
+                function startTimer() {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        if (isPlaying) go(i + 1);
+                    }, duration);
+                }
+                
+                function play() {
+                    if (!isPlaying) {
+                        isPlaying = true;
+                        startTimer();
+                    }
+                }
+                
+                function pause() {
+                    isPlaying = false;
+                    clearTimeout(timer);
+                }
+                
+                prevBtn.addEventListener('click', () => {
+                    pause();
+                    go(i - 1);
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    pause();
+                    go(i + 1);
+                });
+                
+                // Pause on hover, resume on leave
+                gal.addEventListener('mouseenter', pause);
+                gal.addEventListener('mouseleave', play);
+                
+                // Keyboard navigation
+                if (galIdx === 0) {
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'ArrowLeft') {
+                            pause();
+                            go(i - 1);
+                        } else if (e.key === 'ArrowRight') {
+                            pause();
+                            go(i + 1);
+                        }
+                    });
+                }
+                
+                // Start
+                render();
+                startTimer();
+            });
+        }
+    </script>
+    <link rel="icon" type="image/webp" href="../photo/dau.webp">
 </head>
 <body>
-  <a href="../index.html" class="back-button">Quay lại</a>
+    <a href="../" class="back-button" aria-label="Quay lại trang chủ">Quay lại</a>
+    <main class="pd-wrapper">
+        <section class="media-article reveal">
+            <div class="article-inner">
+                <h2 class="section-title" style="font-size: 3.5rem; text-align: center; margin-bottom: 2rem; background: var(--gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">SPARKLING NIGHT 2025: LUMINARIA – WHERE ANCIENT SPIRITS WEAVE THE HARMONIC REALM</h2>
 
-  <section class="event-hero">
-    <h1>SPARKLING NIGHT</h1>
-    <div class="event-date">✨ 19/11/2025 ✨</div>
-    <p style="max-width: 700px; font-size: 1.25rem; opacity: 0.95; position: relative; z-index: 1;">
-      Đêm hội tụ ánh sáng - Nơi tất cả những nỗ lực, tài năng và đam mê được tôn vinh
-    </p>
-  </section>
+                <p class="media-paragraph">Giữa không gian #Luminaria lấp lánh, Sparkling Night 2025 ngân vang tựa như bản hòa tấu kỳ diệu nơi âm sắc hào hùng của dân tộc đan quyện cùng ánh sáng sân khấu lung linh. Thắp sáng đêm Chung kết bằng những giai điệu bùng cháy mà lắng đọng, bản giao hưởng Luminaria đã đánh dấu chặng đường tuổi trẻ Chu Văn An tiên phong thổi hồn vào những giá trị truyền thống xưa cũ, khơi dậy bản sắc dân gian ngàn đời thông qua chuỗi hoạt động ý nghĩa của mùa sự kiện.</p>
 
-  <div class="event-content">
-    <div class="event-section">
-      <h2>Về đêm chung kết</h2>
-      <p>
-        Sparkling Night là đỉnh cao của cuộc thi Vẻ đẹp học sinh Chu Văn An 2025. Đây là đêm hội hoành tráng nhất, nơi công bố kết quả cuộc thi và tôn vinh những cá nhân, nhà xuất sắc nhất. Với sân khấu chuyên nghiệp, âm thanh ánh sáng đỉnh cao và những tiết mục nghệ thuật đặc sắc, Sparkling Night hứa hẹn mang đến một đêm không thể quên.
-      </p>
-      <div class="highlight-box">
-        <strong>🎭 Chủ đề:</strong> "The Solustrance of Sounds - Âm sắc dân gian" - Tôn vinh vẻ đẹp văn hóa truyền thống qua âm nhạc và nghệ thuật đương đại.
-      </div>
-    </div>
+                <div class="media-gallery">
+                    <div class="slides">
+                        <img data-original="../photo/snight/1/1.webp" alt="Sparkling Night 2025" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/1/2.webp" alt="Luminaria Stage" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/1/3.webp" alt="Opening Performance" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/1/4.webp" alt="Night Atmosphere" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/1/5.webp" alt="Stage Lights" loading="lazy" decoding="async">
+                    </div>
+                    <button class="nav prev" aria-label="Ảnh trước">‹</button>
+                    <button class="nav next" aria-label="Ảnh sau">›</button>
+                    <div class="dots" aria-label="Chọn ảnh"></div>
+                </div>
 
-    <div class="event-section">
-      <h2>Thông tin chi tiết</h2>
-      <div class="info-grid">
-        <div class="info-card">
-          <h3>📍 Địa điểm</h3>
-          <p>Nhà hát lớn THPT Chu Văn An</p>
-        </div>
-        <div class="info-card">
-          <h3>⏰ Thời gian</h3>
-          <p>18:00 - 21:30</p>
-        </div>
-        <div class="info-card">
-          <h3>👥 Quy mô</h3>
-          <p>Toàn thể học sinh + khách mời</p>
-        </div>
-        <div class="info-card">
-          <h3>👔 Dress code</h3>
-          <p>Formal / Semi-formal</p>
-        </div>
-      </div>
-    </div>
+                <p class="media-paragraph">Hành trình thăng hoa những nốt son di sản trong âm hưởng thời đại mới đã được khép lại thông qua 8 tiết mục Hoạt cảnh đến từ 8 nhóm nhà, nơi các tác phẩm văn học lớn được làm mới bằng ngôn ngữ của điện ảnh, ánh sáng và âm thanh. Ẩn chứa nhiều thông điệp giàu cảm xúc, 8 màn trình diễn trong đêm Chung kết đã theo bước lịch sử, kể tiếp câu chuyện của văn hóa trong sự giao thoa với biểu tượng của từng nhóm nhà: Nhà A (Adetis) - Sự linh hoạt, Nhà D (Dalmerin) - Sự kiên cường, Nhà E (Ephonica) - sự nhiệt huyết, nhà I (Imersica) - Sự biết ơn, Nhà M (Moneris) - Sự sâu sắc, Nhà P (Perlindor) - Sự thanh tao, Nhà S (Seraphyn) - Sự điềm đạm, Nhà V (Versaline) - Sự cởi mở.</p>
 
-    <div class="event-section">
-      <h2>Chương trình đêm hội</h2>
-      <p><strong>18:00 - 18:30:</strong> Đón khách và check-in tại red carpet</p>
-      <p><strong>18:30 - 19:00:</strong> Khai mạc và phát biểu của Ban Giám hiệu</p>
-      <p><strong>19:00 - 19:45:</strong> Phần thi tài năng và trình diễn đặc sắc của Top thí sinh</p>
-      <p><strong>19:45 - 20:30:</strong> Công bố kết quả và trao giải các hạng mục</p>
-      <p><strong>20:30 - 21:00:</strong> Tiết mục đặc biệt và phát biểu của các nhà vô địch</p>
-      <p><strong>21:00 - 21:30:</strong> After-party và chụp hình kỷ niệm</p>
-    </div>
+                <div class="media-gallery">
+                    <div class="slides">
+                        <img data-original="../photo/snight/2/1.webp" alt="Nhà A - Adetis" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/2.webp" alt="Nhà D - Dalmerin" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/3.webp" alt="Nhà E - Ephonica" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/4.webp" alt="Nhà I - Imersica" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/5.webp" alt="Nhà M - Moneris" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/6.webp" alt="Nhà P - Perlindor" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/7.webp" alt="Nhà S - Seraphyn" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/2/8.webp" alt="Nhà V - Versaline" loading="lazy" decoding="async">
+                    </div>
+                    <button class="nav prev" aria-label="Ảnh trước">‹</button>
+                    <button class="nav next" aria-label="Ảnh sau">›</button>
+                    <div class="dots" aria-label="Chọn ảnh"></div>
+                </div>
 
-    <div class="event-section">
-      <h2>Các hạng mục giải thưởng</h2>
-      <div class="awards-section">
-        <div class="award-item">
-          <div class="award-icon">👑</div>
-          <div>
-            <strong>NHÀ VÔ ĐỊCH SPARKLING CVA 2025</strong><br>
-            <span style="opacity: 0.8;">Cúp vàng + 500 điểm</span>
-          </div>
-        </div>
-        <div class="award-item">
-          <div class="award-icon">🏆</div>
-          <div>
-            <strong>HỌC SINH VẺ ĐẸP SPARKLING</strong><br>
-            <span style="opacity: 0.8;">Top thí sinh xuất sắc nhất</span>
-          </div>
-        </div>
-        <div class="award-item">
-          <div class="award-icon">⭐</div>
-          <div>
-            <strong>GIẢI TÀI NĂNG ĐẶC BIỆT</strong><br>
-            <span style="opacity: 0.8;">Ca hát, nhảy, nhạc cụ xuất sắc</span>
-          </div>
-        </div>
-        <div class="award-item">
-          <div class="award-icon">💝</div>
-          <div>
-            <strong>GIẢI NHÂN ÁI</strong><br>
-            <span style="opacity: 0.8;">Đóng góp thiện nguyện nổi bật</span>
-          </div>
-        </div>
-        <div class="award-item">
-          <div class="award-icon">🎨</div>
-          <div>
-            <strong>GIẢI SÁNG TẠO</strong><br>
-            <span style="opacity: 0.8;">Ý tưởng độc đáo và nghệ thuật</span>
-          </div>
-        </div>
-      </div>
-    </div>
+                <p class="media-paragraph">Đặc biệt, sự xuất hiện của rapper "người miền núi chất" Double2T và giọng hát đầy ngọt ngào của VSTRA đã đem tới những ca khúc trendy khuấy động bầu không khí SNight, gắn kết hàng trăm trái tim cùng hòa chung nhịp đập cảm xúc trong đêm hội rực rỡ.</p>
 
-    <div class="event-section">
-      <h2>Tiết mục đặc biệt</h2>
-      <p>
-        Bên cạnh việc công bố kết quả, Sparkling Night còn có sự xuất hiện của các khách mời đặc biệt, cựu học sinh Chu Văn An nổi tiếng và những tiết mục biểu diễn nghệ thuật đỉnh cao. Đặc biệt, màn trình diễn âm nhạc dân gian kết hợp hiện đại sẽ là highlight của đêm hội.
-      </p>
-      <div class="highlight-box">
-        <strong>🎵 Khách mời đặc biệt:</strong> Ca sĩ/Nghệ sĩ (sẽ công bố sau) + Dàn nhạc giao hưởng học sinh CVA
-      </div>
-    </div>
+                <div class="media-gallery">
+                    <div class="slides">
+                        <img data-original="../photo/snight/3/1.webp" alt="Double2T Performance" loading="lazy" decoding="async">
+                        <img data-original="../photo/snight/3/2.webp" alt="VSTRA Performance" loading="lazy" decoding="async">
+                    </div>
+                    <button class="nav prev" aria-label="Ảnh trước">‹</button>
+                    <button class="nav next" aria-label="Ảnh sau">›</button>
+                    <div class="dots" aria-label="Chọn ảnh"></div>
+                </div>
 
-    <div class="event-section">
-      <h2>Lưu ý quan trọng</h2>
-      <p><strong>✓</strong> Vé mời sẽ được phát cho học sinh từ 17/11</p>
-      <p><strong>✓</strong> Dress code: Áo dài, vest, váy dạ hội hoặc trang phục lịch sự</p>
-      <p><strong>✓</strong> Có khu vực red carpet để check-in và chụp hình từ 18:00</p>
-      <p><strong>✓</strong> Nghiêm cấm mang đồ ăn thức uống vào hội trường</p>
-      <p><strong>✓</strong> Chương trình được livestream trên fanpage Sparkling CVA</p>
-      <div class="highlight-box">
-        <strong>✨ Slogan:</strong> "Shine bright like a diamond - Let your light sparkle!"
-      </div>
-    </div>
-  </div>
+                <div class="results-section">
+                    <h3>🎊 PHẦN THI TÀI NĂNG</h3>
+                    <div class="results-list" role="list">
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">🏆</span>
+                            <span class="results-text"><strong>Giải Đặc biệt:</strong> Nhà I</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">1</span>
+                            <span class="results-text"><strong>Giải Nhất:</strong> Nhà D</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">2</span>
+                            <span class="results-text"><strong>Giải Nhì:</strong> Nhà P</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">3</span>
+                            <span class="results-text"><strong>Giải Ba:</strong> Nhà A</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">⭐</span>
+                            <span class="results-text"><strong>Giải Tiềm năng:</strong> Nhà M, Nhà S, Nhà E và Nhà V</span>
+                        </div>
+                    </div>
+                </div>
 
-  <script src="../script.js"></script>
+                <div class="results-section">
+                    <h3>🎊 KẾT QUẢ CHUNG CUỘC</h3>
+                    <div class="results-list" role="list">
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">1</span>
+                            <span class="results-text"><strong>Giải Nhất:</strong> Nhà M</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">2</span>
+                            <span class="results-text"><strong>Giải Nhì:</strong> Nhà I và Nhà P</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">3</span>
+                            <span class="results-text"><strong>Giải Ba:</strong> Nhà E và Nhà S</span>
+                        </div>
+                        <div class="results-item" role="listitem">
+                            <span class="results-rank">K</span>
+                            <span class="results-text"><strong>Giải Khuyến khích:</strong> Nhà A, Nhà D và Nhà V</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="media-paragraph">Chặng đường Sparkling lần thứ XIII đã đi tới hồi kết, khơi dậy niềm hy vọng để ta hướng về một mùa Lấp Lánh đáng nhớ tiếp theo. Những giai điệu của bản hòa tấu truyền thống còn vang vọng trong tâm trí, lắng đọng trong lòng mỗi người vô vàn cảm xúc khó quên. Còn bây giờ, hãy cùng nhau ngắm nhìn lại những khoảnh khắc đặc biệt nhất của #Sparkling2025 nhé!</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Initialize media galleries once DOM is parsed and set image sources with WebP fallback
+        document.addEventListener('DOMContentLoaded', function() {
+            // Assign image sources using WebP->original fallback
+            document.querySelectorAll('.media-gallery .slides img').forEach(function(img){
+                const original = img.getAttribute('data-original');
+                if (original) setImageWithWebp(img, original);
+            });
+            initGalleries();
+        });
+    </script>
+            
 </body>
 </html>
