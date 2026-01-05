@@ -106,7 +106,7 @@ window.addEventListener('scroll', () => {
 
 // === Countdown đến 19/11/2025 (tính theo ngày lịch, bỏ qua giờ phút) ===
 (function setupCountdown() {
-  const countdownElement = document.getElementById('mainCountdown');
+  const countdownElement = document.getElementById('mainCount');
   if (!countdownElement) return;
 
   // Dùng ngày theo lịch địa phương để tránh lệch D- do giờ phút trong ngày
@@ -721,3 +721,4 @@ if (housesSection) {
     once.observe(housesSection);
   }
 })();
+
